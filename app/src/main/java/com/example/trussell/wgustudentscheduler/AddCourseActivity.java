@@ -72,8 +72,9 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
             }
 
             AppUtils.showShortMessage(this, getString(R.string.data_saved));
-            Intent detailsScreenIntent = getSupportParentActivityIntent();
-            startActivity(detailsScreenIntent);
+//            Intent detailsScreenIntent = getSupportParentActivityIntent();
+//            startActivity(detailsScreenIntent);
+            finish();
 
         } else {
             AppUtils.showLongMessage(this, validate);
