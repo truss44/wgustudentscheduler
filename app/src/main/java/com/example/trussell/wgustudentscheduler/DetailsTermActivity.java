@@ -2,7 +2,6 @@ package com.example.trussell.wgustudentscheduler;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -24,7 +23,6 @@ import android.widget.TextView;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.parcelable.ParcelableTerm;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
-import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
 import java.text.DateFormat;
 
@@ -79,6 +77,25 @@ public class DetailsTermActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+
+        final Intent intent = getIntent();
+        if (intent.hasExtra("tabNumber")) {
+            String tab = intent.getExtras().getString("tabNumber");
+            switchToTab(tab);
+        }
+    }
+
+    public void switchToTab(String tab){
+        int tabID = Integer.parseInt(tab);
+        switch (tabID) {
+            case 0: {
+                mViewPager.setCurrentItem(0);
+            }
+
+            case 1: {
+                mViewPager.setCurrentItem(1);
+            }
+        }
     }
 
     public void updateTerm(View view) {
@@ -145,8 +162,10 @@ public class DetailsTermActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                Intent termScreenIntent = new Intent(this, AddTermActivity.class);
-                startActivity(termScreenIntent);
+                ParcelableTerm parcelableTerm = new ParcelableTerm(term);
+                Intent addcourseScreenIntent = new Intent(getApplicationContext(), AddCourseActivity.class);
+                addcourseScreenIntent.putExtra("termData", parcelableTerm);
+                startActivity(addcourseScreenIntent);
                 return true;
         }
 

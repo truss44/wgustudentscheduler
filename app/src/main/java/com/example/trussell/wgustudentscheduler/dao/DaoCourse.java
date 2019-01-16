@@ -21,6 +21,8 @@ public interface DaoCourse {
     @Query("SELECT * FROM courses ORDER BY id desc")
     LiveData<List<Course>> fetchAllCourses();
 
+    @Query("SELECT * FROM courses WHERE termID = :termID ORDER BY id desc")
+    LiveData<List<Course>> fetchCoursesByTerm(int termID);
 
     @Query("SELECT * FROM courses WHERE id = :courseID")
     LiveData<Course> getCourse(int courseID);
