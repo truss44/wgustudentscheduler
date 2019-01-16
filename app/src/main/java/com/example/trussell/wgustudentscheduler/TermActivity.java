@@ -8,7 +8,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
@@ -20,7 +19,6 @@ import com.example.trussell.wgustudentscheduler.adapter.TermsListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.parcelable.ParcelableTerm;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
-import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.Constants;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
@@ -55,12 +53,6 @@ public class TermActivity extends AppCompatActivity implements Constants {
 
             @Override
             public void onLongClick(final View view, final int position) {
-                view.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        showPopupMenu(view, position);
-                    }
-                });
             }
         }));
 
@@ -89,71 +81,6 @@ public class TermActivity extends AppCompatActivity implements Constants {
     private void updateEmptyView() {
         emptyView.setVisibility(View.VISIBLE);
         recyclerView.setVisibility(View.GONE);
-    }
-
-    private void showPopupMenu(View view, int position) {
-        final Term term = termsListAdapter.getItem(position);
-        final String item = (String) view.getTag();
-
-        PopupMenu popup = new PopupMenu(this, view);
-        popup.getMenuInflater().inflate(R.menu.popup, popup.getMenu());
-        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
-                    case R.id.menuRemove: {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(TermActivity.this);
-                        builder.setCancelable(false);
-                        builder.setMessage(R.string.remove_term);
-                        builder.setPositiveButton(android.R.string.yes,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        Thread thread = new Thread(new Runnable(){
-                                            public void run() {
-                                                TermRepository termRepository = new TermRepository(TermActivity.this);
-                                                termRepository.deleteTerm(term.getId());
-                                            }
-                                        });
-
-                                        thread.start();
-
-                                        try {
-                                            thread.join(2000);
-                                        } catch (InterruptedException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                        finish();
-                                        startActivity(getIntent());
-                                    }
-                                });
-
-                        builder.setNegativeButton(android.R.string.no,
-                                new DialogInterface.OnClickListener() {
-                                    public void onClick(DialogInterface dialog, int id) {
-                                        dialog.cancel();
-                                    }
-                                });
-
-                        builder.create().show();
-                        return true;
-                    }
-
-                    case R.id.menuUpdate: {
-                        ParcelableTerm parcelableTerm = new ParcelableTerm(term);
-                        Intent detailsScreenIntent = new Intent(getApplicationContext(), UpdateTermActivity.class);
-                        detailsScreenIntent.putExtra("termData", parcelableTerm);
-                        startActivity(detailsScreenIntent);
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        });
-
-        popup.show();
     }
 
     @Override

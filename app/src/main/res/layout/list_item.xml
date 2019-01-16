@@ -19,11 +19,9 @@
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <ImageView
-        android:id="@+id/popupButton"
-        android:layout_height="match_parent"
         android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:background="@color/menu_selector"
-        android:src="@drawable/ic_overflow"
-        android:contentDescription="@string/content_open_popup" />
+        android:src="@drawable/ic_overflow" />
 
 </LinearLayout>
