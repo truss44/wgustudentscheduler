@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3f51b5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#448AFF</color>
+    <color name="view_divider_color">#BDBDBD</color>
+    <color name="line">#40000000</color>
+    <color name="light_gray">#E4E4E4</color>
+    <color name="bg_layout">#EBEBEB</color>
+    <color name="menu_selector">@color/view_divider_color</color>
+</resources>

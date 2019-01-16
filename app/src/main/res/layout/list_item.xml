@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/listPreferredItemHeight"
+    tools:ignore="UseCompoundDrawables">
+
+    <TextView
+        android:id="@+id/nameTextView"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:background="@color/light_gray"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/popupButton"
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:background="@color/menu_selector"
+        android:src="@drawable/ic_overflow"
+        android:contentDescription="@string/content_open_popup" />
+
+</LinearLayout>
