@@ -180,9 +180,10 @@ public class DetailsTermActivity extends AppCompatActivity {
             String readableStart = DateFormat.getDateInstance(DateFormat.LONG).format(term.getStartDate());
             String readableEnd = DateFormat.getDateInstance(DateFormat.LONG).format(term.getEndDate());
 
-            label1.append(":");
-            label2.append(":");
-            label3.append(":");
+            TextView[] textViewArray = { label1, label2, label3 };
+            for (TextView tv : textViewArray) {
+                tv.append(":");
+            }
 
             name.setText(term.getName());
             startDate.setText(readableStart);
