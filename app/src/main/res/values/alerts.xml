@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="quit">Are You Sure You Want To Quit?</string>
+    <string name="remove_term">Are you sure you want to remove this term?</string>
 </resources>

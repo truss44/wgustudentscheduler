@@ -107,7 +107,8 @@ public class UpdateTermActivity extends AppCompatActivity implements View.OnClic
         }
 
         try {
-            if (AppUtils.formatStringToDate(startDateText).after(AppUtils.formatStringToDate(endDateText))) {
+            if (AppUtils.formatStringToDate(startDateText).after(AppUtils.formatStringToDate(endDateText)) ||
+                    AppUtils.formatStringToDate(startDateText).equals(AppUtils.formatStringToDate(endDateText))) {
                 errorMsg.append(getString(R.string.date_after_start) + "\n");
             }
         } catch (Exception e) {
@@ -122,7 +123,14 @@ public class UpdateTermActivity extends AppCompatActivity implements View.OnClic
     }
 
     public void resetForm(View view) {
-        setData();
+        name.setText(term.getName());
+        startDate.setInputType(InputType.TYPE_CLASS_TEXT);
+        startDate.setText(AppUtils.getFormattedDateString(term.getStartDate()));
+//        startDate.setInputType(InputType.TYPE_NULL);
+
+        endDate.setInputType(InputType.TYPE_CLASS_TEXT);
+        endDate.setText(AppUtils.getFormattedDateString(term.getEndDate()));
+//        endDate.setInputType(InputType.TYPE_NULL);
     }
 
     private void setDateTimeField() {
@@ -130,7 +138,7 @@ public class UpdateTermActivity extends AppCompatActivity implements View.OnClic
         endDate.setOnClickListener(this);
 
         Calendar newCalendar = Calendar.getInstance();
-        startDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        startDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
@@ -140,7 +148,7 @@ public class UpdateTermActivity extends AppCompatActivity implements View.OnClic
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
-        endDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        endDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();

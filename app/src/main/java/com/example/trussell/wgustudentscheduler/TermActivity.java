@@ -102,7 +102,41 @@ public class TermActivity extends AppCompatActivity implements Constants {
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.menuRemove: {
-                        AppUtils.showShortMessage(TermActivity.this, term.getName() + " remove");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(TermActivity.this);
+                        builder.setCancelable(false);
+                        builder.setMessage(R.string.remove_term);
+                        builder.setPositiveButton(android.R.string.yes,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Thread thread = new Thread(new Runnable(){
+                                            public void run() {
+                                                TermRepository termRepository = new TermRepository(TermActivity.this);
+                                                termRepository.deleteTerm(term.getId());
+                                            }
+                                        });
+
+                                        thread.start();
+
+                                        try {
+                                            thread.join(2000);
+                                        } catch (InterruptedException e) {
+                                            e.printStackTrace();
+                                        }
+
+                                        finish();
+                                        startActivity(getIntent());
+                                    }
+                                });
+
+                        builder.setNegativeButton(android.R.string.no,
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                        builder.create().show();
                         return true;
                     }
 
@@ -168,7 +202,10 @@ public class TermActivity extends AppCompatActivity implements Constants {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        finish();
+                        Intent a = new Intent(Intent.ACTION_MAIN);
+                        a.addCategory(Intent.CATEGORY_HOME);
+                        a.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(a);
                     }
                 });
         builder.setNegativeButton(android.R.string.no,

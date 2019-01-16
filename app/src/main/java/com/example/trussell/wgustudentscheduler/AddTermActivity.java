@@ -90,7 +90,8 @@ public class AddTermActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         try {
-            if (AppUtils.formatStringToDate(startDateText).after(AppUtils.formatStringToDate(endDateText))) {
+            if (AppUtils.formatStringToDate(startDateText).after(AppUtils.formatStringToDate(endDateText)) ||
+                    AppUtils.formatStringToDate(startDateText).equals(AppUtils.formatStringToDate(endDateText))) {
                 errorMsg.append(getString(R.string.date_after_start) + "\n");
             }
         } catch (Exception e) {
@@ -115,7 +116,7 @@ public class AddTermActivity extends AppCompatActivity implements View.OnClickLi
         endDate.setOnClickListener(this);
 
         Calendar newCalendar = Calendar.getInstance();
-        startDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        startDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
@@ -125,7 +126,7 @@ public class AddTermActivity extends AppCompatActivity implements View.OnClickLi
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
-        endDatePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        endDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();

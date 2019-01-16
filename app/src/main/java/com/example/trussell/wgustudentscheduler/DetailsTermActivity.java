@@ -1,8 +1,10 @@
 package com.example.trussell.wgustudentscheduler;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -21,6 +23,7 @@ import android.widget.TextView;
 
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.parcelable.ParcelableTerm;
+import com.example.trussell.wgustudentscheduler.repo.TermRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
 import java.text.DateFormat;
@@ -33,20 +36,14 @@ public class DetailsTermActivity extends AppCompatActivity {
 
     private static Term term;
 
-    public void updateTerm(View view) {
-        ParcelableTerm parcelableTerm = new ParcelableTerm(term);
-        Intent detailsScreenIntent = new Intent(this, UpdateTermActivity.class);
-        detailsScreenIntent.putExtra("termData", parcelableTerm);
-        startActivity(detailsScreenIntent);
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_term);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        toolbar.setSubtitle(R.string.term_details);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -55,8 +52,75 @@ public class DetailsTermActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.tabs);
 
-        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position) {
+                switch (position) {
+                    case 0: {
+                        toolbar.setSubtitle(R.string.term_details);
+                        break;
+                    }
+
+                    case 1: {
+                        toolbar.setSubtitle(R.string.app_courses);
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {}
+        });
+
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+    }
+
+    public void updateTerm(View view) {
+        ParcelableTerm parcelableTerm = new ParcelableTerm(term);
+        Intent detailsScreenIntent = new Intent(this, UpdateTermActivity.class);
+        detailsScreenIntent.putExtra("termData", parcelableTerm);
+        startActivity(detailsScreenIntent);
+    }
+
+    public void removeTerm(View view) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setCancelable(false);
+        builder.setMessage(R.string.remove_term);
+        builder.setPositiveButton(android.R.string.yes,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        Thread thread = new Thread(new Runnable(){
+                            public void run() {
+                                TermRepository termRepository = new TermRepository(DetailsTermActivity.this);
+                                termRepository.deleteTerm(term.getId());
+                            }
+                        });
+
+                        thread.start();
+
+                        try {
+                            thread.join(2000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
+                        Intent termsScreenIntent = new Intent(getApplicationContext(), TermActivity.class);
+                        startActivity(termsScreenIntent);
+                    }
+                });
+
+        builder.setNegativeButton(android.R.string.no,
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+
+        builder.create().show();
     }
 
     @Override
@@ -114,7 +178,7 @@ public class DetailsTermActivity extends AppCompatActivity {
             TextView endDate = view.findViewById(R.id.endDateTextView);
 
             String readableStart = DateFormat.getDateInstance(DateFormat.LONG).format(term.getStartDate());
-            String readableEnd = DateFormat.getDateInstance(DateFormat.LONG).format(term.getStartDate());
+            String readableEnd = DateFormat.getDateInstance(DateFormat.LONG).format(term.getEndDate());
 
             label1.append(":");
             label2.append(":");

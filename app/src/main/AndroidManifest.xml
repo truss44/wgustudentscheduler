@@ -22,14 +22,16 @@
         <activity
             android:name=".AddTermActivity"
             android:label="@string/app_add_term"
+            android:noHistory="true"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".UpdateTermActivity"
             android:label="@string/app_update_term"
+            android:noHistory="true"
             android:theme="@style/AppTheme" />
         <activity
             android:name=".DetailsTermActivity"
-            android:label="@string/title_activity_details_term"
+            android:label="@string/term_details"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
