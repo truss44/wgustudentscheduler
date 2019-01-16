@@ -52,19 +52,19 @@ public class DetailsTermActivity extends AppCompatActivity {
 
         TabLayout tabLayout = findViewById(R.id.tabs);
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
-
-            @Override
-            public void onPageSelected(int position) {
-                switch (position) {
+            public void onTabSelected(TabLayout.Tab tab) {
+                switch(tab.getPosition()) {
                     case 0: {
+                        mViewPager.setCurrentItem(0);
                         toolbar.setSubtitle(R.string.term_details);
                         break;
                     }
 
                     case 1: {
+                        mViewPager.setCurrentItem(1);
                         toolbar.setSubtitle(R.string.app_courses);
                         break;
                     }
@@ -72,10 +72,13 @@ public class DetailsTermActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {}
-        });
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
     }
 
     public void updateTerm(View view) {
