@@ -160,8 +160,7 @@ public class DetailsTermActivity extends AppCompatActivity {
     @Override
     public void onRestart() {
         super.onRestart();
-
-        AppUtils.showShortMessage(this, "testing");
+        recreate();
     }
 
     @Override
