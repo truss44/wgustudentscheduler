@@ -1,10 +1,15 @@
 package com.example.trussell.wgustudentscheduler;
 
+import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 
 import android.support.v4.app.Fragment;
@@ -20,11 +25,20 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import com.example.trussell.wgustudentscheduler.adapter.CoursesListAdapter;
+import com.example.trussell.wgustudentscheduler.adapter.TermsListAdapter;
+import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
+import com.example.trussell.wgustudentscheduler.parcelable.ParcelableCourse;
 import com.example.trussell.wgustudentscheduler.parcelable.ParcelableTerm;
+import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
+import com.example.trussell.wgustudentscheduler.util.AppUtils;
+import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
+import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
 
 import java.text.DateFormat;
+import java.util.List;
 
 public class DetailsTermActivity extends AppCompatActivity {
 
@@ -144,6 +158,13 @@ public class DetailsTermActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onRestart() {
+        super.onRestart();
+
+        AppUtils.showShortMessage(this, "testing");
+    }
+
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.findItem(R.id.action_add);
         CharSequence cs = getString(R.string.add_course);
@@ -212,6 +233,68 @@ public class DetailsTermActivity extends AppCompatActivity {
             endDate.setText(readableEnd);
         }
 
+        TextView emptyView;
+        RecyclerView recyclerView;
+        CoursesListAdapter coursesListAdapter = null;
+        CourseRepository courseRepository;
+
+        private void updateCoursesTab(View view) {
+
+            courseRepository = new CourseRepository(getContext());
+
+            recyclerView = view.findViewById(R.id.itemsList);
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1 , StaggeredGridLayoutManager.VERTICAL));
+            recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), recyclerView, new RecyclerViewClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    AppUtils.showShortMessage(getContext(), "testing");
+                }
+
+                @Override
+                public void onLongClick(final View view, final int position) {
+                }
+            }));
+
+            emptyView = view.findViewById(R.id.emptyView);
+
+            updateCoursesList();
+        }
+
+        private void updateCoursesList() {
+            courseRepository.getCourses().observe(this, new Observer<List<Course>>() {
+                @Override
+                public void onChanged(@Nullable List<Course> courses) {
+                    if (courses != null && courses.size() > 0) {
+                        emptyView.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        if (coursesListAdapter == null) {
+                            coursesListAdapter = new CoursesListAdapter(courses);
+                            recyclerView.setAdapter(coursesListAdapter);
+
+                        } else coursesListAdapter.addCourses(courses);
+                    } else updateEmptyView();
+                }
+            });
+        }
+
+        private void updateEmptyView() {
+            emptyView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.GONE);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(MenuItem item) {
+
+            switch (item.getItemId()) {
+                case R.id.action_add:
+                    Intent termScreenIntent = new Intent(getContext(), AddCourseActivity.class);
+                    startActivity(termScreenIntent);
+                    return true;
+            }
+
+            return super.onOptionsItemSelected(item);
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
@@ -225,6 +308,7 @@ public class DetailsTermActivity extends AppCompatActivity {
 
                 case 2: {
                     rootView = inflater.inflate(R.layout.courses_tab_term, container, false);
+                    updateCoursesTab(rootView);
                     break;
                 }
             }
