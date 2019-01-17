@@ -38,6 +38,20 @@
             android:label="@string/add_course"
             android:noHistory="true"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UpdateCourseActivity"
+            android:label="@string/update_course"
+            android:noHistory="true"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DetailsCourseActivity"
+            android:label="@string/course_details"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".AddMentorActivity"
+            android:label="@string/add_mentor"
+            android:noHistory="true"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

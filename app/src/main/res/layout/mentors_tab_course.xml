@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_gray">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:background="@color/light_gray"
+        android:orientation="vertical">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/itemsList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_gray"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/emptyView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/margin_xlarge"
+            android:layout_marginTop="@dimen/margin_xxxxxxxxlarge"
+            android:layout_marginRight="@dimen/margin_xlarge"
+            android:background="@color/light_gray"
+            android:drawableTop="@drawable/ic_empty"
+            android:drawablePadding="@dimen/margin"
+            android:gravity="center"
+            android:text="@string/empty"
+            android:textColor="@color/line"
+            android:textSize="@dimen/font_medium_large"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+
+</android.support.design.widget.CoordinatorLayout>

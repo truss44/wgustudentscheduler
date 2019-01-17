@@ -3,36 +3,34 @@ package com.example.trussell.wgustudentscheduler;
 import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.support.v7.widget.Toolbar;
-
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.TextView;
 
 import com.example.trussell.wgustudentscheduler.adapter.CoursesListAdapter;
-import com.example.trussell.wgustudentscheduler.adapter.TermsListAdapter;
+import com.example.trussell.wgustudentscheduler.adapter.MentorsListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Course;
-import com.example.trussell.wgustudentscheduler.model.Term;
+import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.model.Mentor;
 import com.example.trussell.wgustudentscheduler.parcelable.ParcelableCourse;
-import com.example.trussell.wgustudentscheduler.parcelable.ParcelableTerm;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
-import com.example.trussell.wgustudentscheduler.repo.TermRepository;
+import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
+import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
@@ -40,20 +38,32 @@ import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
 import java.text.DateFormat;
 import java.util.List;
 
-public class DetailsTermActivity extends AppCompatActivity {
+public class DetailsCourseActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private static Term term;
+    private String termID;
+    private static Course course;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_details_term);
+        setContentView(R.layout.activity_details_course);
+
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                termID = null;
+            } else {
+                termID = extras.getString("termID");
+            }
+        } else {
+            termID = (String) savedInstanceState.getSerializable("termID");
+        }
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setSubtitle(R.string.term_details);
+        toolbar.setSubtitle(R.string.course_details);
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
 
@@ -69,13 +79,19 @@ public class DetailsTermActivity extends AppCompatActivity {
                 switch(tab.getPosition()) {
                     case 0: {
                         mViewPager.setCurrentItem(0);
-                        toolbar.setSubtitle(R.string.term_details);
+                        toolbar.setSubtitle(R.string.course_details);
                         break;
                     }
 
                     case 1: {
                         mViewPager.setCurrentItem(1);
-                        toolbar.setSubtitle(R.string.app_courses);
+                        toolbar.setSubtitle(R.string.mentors);
+                        break;
+                    }
+
+                    case 2: {
+                        mViewPager.setCurrentItem(2);
+                        toolbar.setSubtitle(R.string.notes);
                         break;
                     }
                 }
@@ -101,28 +117,33 @@ public class DetailsTermActivity extends AppCompatActivity {
             case 1: {
                 mViewPager.setCurrentItem(1);
             }
+
+            case 2: {
+                mViewPager.setCurrentItem(2);
+            }
         }
     }
 
-    public void updateTerm(View view) {
-        ParcelableTerm parcelableTerm = new ParcelableTerm(term);
-        Intent detailsScreenIntent = new Intent(this, UpdateTermActivity.class);
-        detailsScreenIntent.putExtra("termData", parcelableTerm);
+    public void updateCourse(View view) {
+        ParcelableCourse parcelableCourse = new ParcelableCourse(course);
+        Intent detailsScreenIntent = new Intent(this, UpdateCourseActivity.class);
+        detailsScreenIntent.putExtra("courseData", parcelableCourse);
+        detailsScreenIntent.putExtra("termID", termID);
         startActivity(detailsScreenIntent);
     }
 
-    public void removeTerm(View view) {
+    public void removeCourse(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
-        builder.setMessage(R.string.remove_term_alert);
+        builder.setMessage(R.string.remove_course);
         builder.setPositiveButton(android.R.string.yes,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Thread thread = new Thread(new Runnable(){
                             public void run() {
-                                TermRepository termRepository = new TermRepository(DetailsTermActivity.this);
-                                termRepository.deleteTerm(term.getId());
+                                CourseRepository courseRepository = new CourseRepository(DetailsCourseActivity.this);
+                                courseRepository.deleteCourse(course.getId());
                             }
                         });
 
@@ -134,8 +155,7 @@ public class DetailsTermActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
 
-                        Intent termsScreenIntent = new Intent(getApplicationContext(), TermActivity.class);
-                        startActivity(termsScreenIntent);
+                        finish();
                     }
                 });
 
@@ -158,7 +178,7 @@ public class DetailsTermActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.findItem(R.id.action_add);
-        CharSequence cs = getString(R.string.add_course);
+        CharSequence cs = getString(R.string.add_mentor);
         menuItem.setTitle(cs);
         return super.onPrepareOptionsMenu(menu);
     }
@@ -174,10 +194,10 @@ public class DetailsTermActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                ParcelableTerm parcelableTerm = new ParcelableTerm(term);
-                Intent addcourseScreenIntent = new Intent(getApplicationContext(), AddCourseActivity.class);
-                addcourseScreenIntent.putExtra("termData", parcelableTerm);
-                startActivity(addcourseScreenIntent);
+                ParcelableCourse parcelableCourse = new ParcelableCourse(course);
+                Intent addmentorScreenIntent = new Intent(getApplicationContext(), AddMentorActivity.class);
+                addmentorScreenIntent.putExtra("courseData", parcelableCourse);
+                startActivity(addmentorScreenIntent);
                 return true;
         }
 
@@ -200,8 +220,8 @@ public class DetailsTermActivity extends AppCompatActivity {
         }
 
         private void updateDetailsTab(View view) {
-            ParcelableTerm parcelableTerm = getActivity().getIntent().getParcelableExtra("termData");
-            term = parcelableTerm.getTerm();
+            ParcelableCourse parcelableCourse = getActivity().getIntent().getParcelableExtra("courseData");
+            course = parcelableCourse.getCourse();
 
             TextView label1 = view.findViewById(R.id.label1);
             TextView label2 = view.findViewById(R.id.label2);
@@ -211,39 +231,34 @@ public class DetailsTermActivity extends AppCompatActivity {
             TextView startDate = view.findViewById(R.id.startDateTextView);
             TextView endDate = view.findViewById(R.id.endDateTextView);
 
-            String readableStart = DateFormat.getDateInstance(DateFormat.LONG).format(term.getStartDate());
-            String readableEnd = DateFormat.getDateInstance(DateFormat.LONG).format(term.getEndDate());
+            String readableStart = DateFormat.getDateInstance(DateFormat.LONG).format(course.getStartDate());
+            String readableEnd = DateFormat.getDateInstance(DateFormat.LONG).format(course.getEndDate());
 
             TextView[] textViewArray = { label1, label2, label3 };
             for (TextView tv : textViewArray) {
                 tv.append(":");
             }
 
-            name.setText(term.getName());
+            name.setText(course.getName());
             startDate.setText(readableStart);
             endDate.setText(readableEnd);
         }
 
         TextView emptyView;
         RecyclerView recyclerView;
-        CoursesListAdapter coursesListAdapter = null;
-        CourseRepository courseRepository;
+        MentorsListAdapter mentorsListAdapter = null;
+        MentorRepository mentorRepository;
 
-        private void updateCoursesTab(View view) {
+        private void updateMentorsTab(View view) {
 
-            courseRepository = new CourseRepository(getContext());
+            mentorRepository = new MentorRepository(getContext());
 
             recyclerView = view.findViewById(R.id.itemsList);
             recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1 , StaggeredGridLayoutManager.VERTICAL));
             recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), recyclerView, new RecyclerViewClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    final Course course = coursesListAdapter.getItem(position);
-                    ParcelableCourse parcelableCourse = new ParcelableCourse(course);
-                    Intent detailsScreenIntent = new Intent(getContext(), DetailsCourseActivity.class);
-                    detailsScreenIntent.putExtra("courseData", parcelableCourse);
-                    detailsScreenIntent.putExtra("termID", Integer.toString(term.getId()));
-                    startActivity(detailsScreenIntent);
+                    AppUtils.showShortMessage(getContext(), "testing");
                 }
 
                 @Override
@@ -253,21 +268,25 @@ public class DetailsTermActivity extends AppCompatActivity {
 
             emptyView = view.findViewById(R.id.emptyView);
 
-            updateCoursesList(term.getId());
+            updateMentorsList(course.getId());
         }
 
-        private void updateCoursesList(int id) {
-            courseRepository.fetchCoursesByTerm(id).observe(this, new Observer<List<Course>>() {
+        private void updateNotesTab(View view) {
+            
+        }
+
+        private void updateMentorsList(int id) {
+            mentorRepository.fetchMentorsByCourse(id).observe(this, new Observer<List<Mentor>>() {
                 @Override
-                public void onChanged(@Nullable List<Course> courses) {
-                    if (courses != null && courses.size() > 0) {
+                public void onChanged(@Nullable List<Mentor> mentors) {
+                    if (mentors != null && mentors.size() > 0) {
                         emptyView.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
-                        if (coursesListAdapter == null) {
-                            coursesListAdapter = new CoursesListAdapter(courses);
-                            recyclerView.setAdapter(coursesListAdapter);
+                        if (mentorsListAdapter == null) {
+                            mentorsListAdapter = new MentorsListAdapter(mentors);
+                            recyclerView.setAdapter(mentorsListAdapter);
 
-                        } else coursesListAdapter.addCourses(courses);
+                        } else mentorsListAdapter.addMentors(mentors);
                     } else updateEmptyView();
                 }
             });
@@ -283,8 +302,8 @@ public class DetailsTermActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.action_add:
-                    Intent termScreenIntent = new Intent(getContext(), AddCourseActivity.class);
-                    startActivity(termScreenIntent);
+                    Intent courseScreenIntent = new Intent(getContext(), AddCourseActivity.class);
+                    startActivity(courseScreenIntent);
                     return true;
             }
 
@@ -294,17 +313,23 @@ public class DetailsTermActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_details_term, container, false);
+            View rootView = inflater.inflate(R.layout.fragment_details_course, container, false);
             switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
                 case 1: {
-                    rootView = inflater.inflate(R.layout.details_tab_term, container, false);
+                    rootView = inflater.inflate(R.layout.details_tab_course, container, false);
                     updateDetailsTab(rootView);
                     break;
                 }
 
                 case 2: {
-                    rootView = inflater.inflate(R.layout.courses_tab_term, container, false);
-                    updateCoursesTab(rootView);
+                    rootView = inflater.inflate(R.layout.mentors_tab_course, container, false);
+                    updateMentorsTab(rootView);
+                    break;
+                }
+
+                case 3: {
+                    rootView = inflater.inflate(R.layout.notes_tab_course, container, false);
+                    updateNotesTab(rootView);
                     break;
                 }
             }
@@ -325,7 +350,7 @@ public class DetailsTermActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
     }
 }

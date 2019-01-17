@@ -17,7 +17,8 @@ public class AssessmentRepository implements Constants {
 
     private SchedulerDatabase schedulerDatabase;
     public AssessmentRepository(Context context) {
-        schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME).build();
+        schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME)
+                .fallbackToDestructiveMigration().build();
     }
 
     public void insertAssessment(String name, Date startDate, Date endDate,

@@ -5,4 +5,6 @@
     <string name="valid_end_date">Please enter a valid end date</string>
     <string name="date_after_start">Please enter an end date that occurs AFTER the start date</string>
     <string name="proper_start_end">Please enter a proper start/end date</string>
+    <string name="valid_phone">Please enter a valid phone number</string>
+    <string name="valid_email">Please enter a valid email address</string>
 </resources>

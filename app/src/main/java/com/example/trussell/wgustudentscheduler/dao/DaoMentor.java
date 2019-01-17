@@ -21,6 +21,8 @@ public interface DaoMentor {
     @Query("SELECT * FROM mentors ORDER BY id desc")
     LiveData<List<Mentor>> fetchAllMentors();
 
+    @Query("SELECT * FROM mentors WHERE courseID = :courseID ORDER BY id desc")
+    LiveData<List<Mentor>> fetchMentorsByCourse(int courseID);
 
     @Query("SELECT * FROM mentors WHERE id = :mentorId")
     LiveData<Mentor> getMentor(int mentorId);

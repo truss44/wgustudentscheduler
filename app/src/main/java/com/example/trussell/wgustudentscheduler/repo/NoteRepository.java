@@ -16,7 +16,8 @@ public class NoteRepository implements Constants {
 
     private SchedulerDatabase schedulerDatabase;
     public NoteRepository(Context context) {
-        schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME).build();
+        schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME)
+                .fallbackToDestructiveMigration().build();
     }
 
     public void insertNote(String entry, int setCourseID) {

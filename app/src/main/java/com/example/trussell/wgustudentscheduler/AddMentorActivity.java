@@ -1,0 +1,117 @@
+package com.example.trussell.wgustudentscheduler;
+
+import android.app.DatePickerDialog;
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+
+import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.parcelable.ParcelableCourse;
+import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
+import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
+import com.example.trussell.wgustudentscheduler.util.AppUtils;
+
+import java.util.Calendar;
+import java.util.Date;
+
+public class AddMentorActivity extends AppCompatActivity {
+
+    private EditText name, phone, email;
+    private Button saveButton, resetButton;
+
+    private static Course course;
+    private static String termID;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_add_mentor);
+
+        ParcelableCourse parcelableCourse = this.getIntent().getParcelableExtra("courseData");
+        course = parcelableCourse.getCourse();
+        termID = this.getIntent().getStringExtra("termID");
+
+        findViewsById();
+    }
+
+    private void findViewsById() {
+        name = findViewById(R.id.nameTextBox);
+        phone = findViewById(R.id.phoneTextBox);
+        email = findViewById(R.id.emailTextBox);
+
+        saveButton = findViewById(R.id.saveButton);
+        resetButton = findViewById(R.id.resetButton);
+    }
+
+    public void submitData(View view) {
+        String validate = isValid();
+        String nameText = name.getText().toString();
+        String phoneText = phone.getText().toString();
+        String emailText = email.getText().toString();
+
+        if (validate.length() == 0) {
+            try {
+                int courseID = course.getId();
+                MentorRepository mentorRepository = new MentorRepository(getApplicationContext());
+                mentorRepository.insertMentor(nameText, phoneText, emailText, courseID);
+            } catch (Exception e) {
+                AppUtils.showLongMessage(this, e.toString());
+            }
+
+            AppUtils.showShortMessage(this, getString(R.string.data_saved));
+//            Intent detailsScreenIntent = getSupportParentActivityIntent();
+//            startActivity(detailsScreenIntent);
+            finish();
+
+        } else {
+            AppUtils.showLongMessage(this, validate);
+        }
+    }
+
+    public Intent getSupportParentActivityIntent() {
+        final Bundle bundle = new Bundle();
+        final Intent intent = new Intent(this, DetailsCourseActivity.class);
+        bundle.putString("tabNumber", "1");
+        intent.putExtras(bundle);
+        return intent;
+    }
+
+    public String isValid() {
+        StringBuilder errorMsg = new StringBuilder();
+        String nameText = name.getText().toString();
+        String phoneText = phone.getText().toString();
+        String emailText = email.getText().toString();
+
+        if (AppUtils.isNullOrEmpty(nameText)) {
+            errorMsg.append(getString(R.string.valid_name) + "\n");
+        }
+
+        if (AppUtils.isNullOrEmpty(phoneText)) {
+            errorMsg.append(getString(R.string.valid_phone) + "\n");
+        }
+
+        if (AppUtils.isNullOrEmpty(emailText)) {
+            errorMsg.append(getString(R.string.valid_email) + "\n");
+        }
+
+        return errorMsg.toString();
+    }
+
+    private boolean saveData(View view) {
+            return false;
+    }
+
+    public void resetForm(View view) {
+        name.setText("");
+        phone.setText("");
+        email.setText("");
+    }
+}

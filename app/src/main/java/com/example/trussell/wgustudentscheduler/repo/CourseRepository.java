@@ -17,7 +17,8 @@ public class CourseRepository implements Constants {
 
     private SchedulerDatabase schedulerDatabase;
     public CourseRepository(Context context) {
-        schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME).build();
+        schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME)
+                .fallbackToDestructiveMigration().build();
     }
 
     public void insertCourse(String name, Date startDate, Date endDate, int termID) {

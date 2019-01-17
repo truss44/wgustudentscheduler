@@ -21,4 +21,16 @@
     <string name="add_course">Add Course</string>
     <string name="app_update_term">Update Term</string>
     <string name="term_details">Term Details</string>
+    <string name="course_details">Course Details</string>
+    <string name="mentors">Mentors</string>
+    <string name="notes">Notes</string>
+    <string name="phone">Phone #</string>
+    <string name="phone_hint">xxx-xxx-xxxx</string>
+    <string name="email">Email</string>
+    <string name="email_address">Email Address</string>
+    <string name="update_course">Update Course</string>
+    <string name="update_term">Update Term</string>
+    <string name="remove_term">Remove Term</string>
+    <string name="remove_course">Remove Course</string>
+    <string name="add_mentor">Add Mentor</string>
 </resources>

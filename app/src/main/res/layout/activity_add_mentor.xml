@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/light_gray"
     android:fitsSystemWindows="true"
-    tools:context=".AddCourseActivity">
+    tools:context=".AddMentorActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,10 +49,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:labelFor="@+id/startTextBox"
-                android:text="@string/start_date" />
+                android:text="@string/phone" />
 
             <EditText
-                android:id="@+id/startTextBox"
+                android:id="@+id/phoneTextBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -60,8 +60,8 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="@string/start_date"
-                android:inputType="date" />
+                android:hint="@string/phone_hint"
+                android:inputType="phone" />
 
         </LinearLayout>
 
@@ -76,10 +76,10 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:labelFor="@+id/endTextBox"
-                android:text="@string/end_date" />
+                android:text="@string/email" />
 
             <EditText
-                android:id="@+id/endTextBox"
+                android:id="@+id/emailTextBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -87,8 +87,8 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="@string/end_date"
-                android:inputType="date" />
+                android:hint="@string/email_address"
+                android:inputType="textEmailAddress" />
 
         </LinearLayout>
 

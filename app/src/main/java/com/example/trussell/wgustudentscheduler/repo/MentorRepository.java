@@ -16,7 +16,8 @@ public class MentorRepository implements Constants {
 
     private SchedulerDatabase schedulerDatabase;
     public MentorRepository(Context context) {
-        schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME).build();
+        schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME)
+                .fallbackToDestructiveMigration().build();
     }
 
     public void insertMentor(String name, String phone, String email, int courseID) {
@@ -72,5 +73,9 @@ public class MentorRepository implements Constants {
 
     public LiveData<List<Mentor>> getMentors() {
         return schedulerDatabase.daoMentor().fetchAllMentors();
+    }
+
+    public LiveData<List<Mentor>> fetchMentorsByCourse(int id) {
+        return schedulerDatabase.daoMentor().fetchMentorsByCourse(id);
     }
 }

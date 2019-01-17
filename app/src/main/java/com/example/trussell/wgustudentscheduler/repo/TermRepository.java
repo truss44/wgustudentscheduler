@@ -17,7 +17,8 @@ public class TermRepository implements Constants {
 
     private SchedulerDatabase schedulerDatabase;
     public TermRepository(Context context) {
-        schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME).build();
+        schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME)
+                .fallbackToDestructiveMigration().build();
     }
 
     public void insertTerm(String name, Date startDate, Date endDate) {

@@ -104,15 +104,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/update_term"
-            android:onClick="updateTerm" />
+            android:text="@string/update_course"
+            android:onClick="updateCourse" />
 
         <Button
             android:id="@+id/removeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/remove_term"
-            android:onClick="removeTerm"/>
+            android:text="@string/remove_course"
+            android:onClick="removeCourse"/>
     </LinearLayout>
 </LinearLayout>
