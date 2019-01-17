@@ -14,10 +14,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 @Entity(tableName = "courses",
-        foreignKeys = @ForeignKey(entity = Course.class,
+        foreignKeys = @ForeignKey(entity = Term.class,
                 parentColumns = "id",
-                childColumns = "termID"),
+                childColumns = "termID",
+                onDelete = CASCADE),
         indices = {@Index(value = {"termID"})})
 public class Course implements Serializable {
 
@@ -27,9 +30,6 @@ public class Course implements Serializable {
 
     @ColumnInfo(name = "name")
     private String name;
-
-    @ColumnInfo(name = "type")
-    private String type;
 
     @ColumnInfo(name = "startDate")
     @TypeConverters({TimestampConverter.class})
@@ -66,14 +66,6 @@ public class Course implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public Date getStartDate() {

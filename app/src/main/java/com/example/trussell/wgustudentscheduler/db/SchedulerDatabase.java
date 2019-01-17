@@ -20,7 +20,7 @@ import com.example.trussell.wgustudentscheduler.model.Term;
         Assessment.class,
         Mentor.class,
         Note.class
-}, version = 2, exportSchema = false)
+}, version = 5, exportSchema = false)
 
 public abstract class SchedulerDatabase extends RoomDatabase {
 

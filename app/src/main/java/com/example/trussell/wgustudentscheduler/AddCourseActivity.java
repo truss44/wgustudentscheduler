@@ -2,7 +2,6 @@ package com.example.trussell.wgustudentscheduler;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +13,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.trussell.wgustudentscheduler.model.Term;
-import com.example.trussell.wgustudentscheduler.parcelable.ParcelableTerm;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
@@ -29,16 +27,12 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
     private DatePickerDialog startDatePickerDialog;
     private DatePickerDialog endDatePickerDialog;
 
-    private static Term term;
+    private static Term term = TermActivity.getTermData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
-
-        ParcelableTerm parcelableTerm = this.getIntent().getParcelableExtra("termData");
-        term = parcelableTerm.getTerm();
-
         findViewsById();
         setDateTimeField();
     }
@@ -64,29 +58,17 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
 
         if (validate.length() == 0) {
             try {
-                int termID = term.getId();
                 CourseRepository courseRepository = new CourseRepository(getApplicationContext());
-                courseRepository.insertCourse(nameText, startDateText, endDateText, termID);
+                courseRepository.insertCourse(nameText, startDateText, endDateText, term.getId());
             } catch (Exception e) {
                 AppUtils.showLongMessage(this, e.toString());
             }
 
             AppUtils.showShortMessage(this, getString(R.string.data_saved));
-//            Intent detailsScreenIntent = getSupportParentActivityIntent();
-//            startActivity(detailsScreenIntent);
             finish();
-
         } else {
             AppUtils.showLongMessage(this, validate);
         }
-    }
-
-    public Intent getSupportParentActivityIntent() {
-        final Bundle bundle = new Bundle();
-        final Intent intent = new Intent(this, DetailsTermActivity.class);
-        bundle.putString("tabNumber", "1");
-        intent.putExtras(bundle);
-        return intent;
     }
 
     public String isValid() {

@@ -23,7 +23,7 @@ import java.util.Date;
 
 public class UpdateTermActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Term term;
+    private static Term term = TermActivity.getTermData();
     private EditText name, startDate, endDate;
     private Button saveButton, resetButton;
 
@@ -53,9 +53,6 @@ public class UpdateTermActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void setData() {
-        ParcelableTerm parcelableTerm = this.getIntent().getParcelableExtra("termData");
-        term = parcelableTerm.getTerm();
-
         name.setText(term.getName());
         startDate.setText(AppUtils.getFormattedDateString(term.getStartDate()));
         endDate.setText(AppUtils.getFormattedDateString(term.getEndDate()));

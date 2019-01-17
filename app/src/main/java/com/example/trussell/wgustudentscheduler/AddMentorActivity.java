@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.parcelable.ParcelableCourse;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
@@ -27,17 +28,13 @@ public class AddMentorActivity extends AppCompatActivity {
     private EditText name, phone, email;
     private Button saveButton, resetButton;
 
-    private static Course course;
-    private static String termID;
+    private static Term term = TermActivity.getTermData();
+    private static Course course = DetailsTermActivity.getCourseData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mentor);
-
-        ParcelableCourse parcelableCourse = this.getIntent().getParcelableExtra("courseData");
-        course = parcelableCourse.getCourse();
-        termID = this.getIntent().getStringExtra("termID");
 
         findViewsById();
     }
@@ -67,21 +64,10 @@ public class AddMentorActivity extends AppCompatActivity {
             }
 
             AppUtils.showShortMessage(this, getString(R.string.data_saved));
-//            Intent detailsScreenIntent = getSupportParentActivityIntent();
-//            startActivity(detailsScreenIntent);
             finish();
-
         } else {
             AppUtils.showLongMessage(this, validate);
         }
-    }
-
-    public Intent getSupportParentActivityIntent() {
-        final Bundle bundle = new Bundle();
-        final Intent intent = new Intent(this, DetailsCourseActivity.class);
-        bundle.putString("tabNumber", "1");
-        intent.putExtras(bundle);
-        return intent;
     }
 
     public String isValid() {

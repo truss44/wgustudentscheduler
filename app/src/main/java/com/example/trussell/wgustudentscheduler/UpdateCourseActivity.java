@@ -14,6 +14,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.parcelable.ParcelableCourse;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
@@ -23,7 +24,8 @@ import java.util.Date;
 
 public class UpdateCourseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private Course course;
+    private static Term term = TermActivity.getTermData();
+    private static Course course = DetailsTermActivity.getCourseData();
     private EditText name, startDate, endDate;
     private Button saveButton, resetButton;
 
@@ -53,9 +55,6 @@ public class UpdateCourseActivity extends AppCompatActivity implements View.OnCl
     }
 
     private void setData() {
-        ParcelableCourse parcelableCourse = this.getIntent().getParcelableExtra("courseData");
-        course = parcelableCourse.getCourse();
-
         name.setText(course.getName());
         startDate.setText(AppUtils.getFormattedDateString(course.getStartDate()));
         endDate.setText(AppUtils.getFormattedDateString(course.getEndDate()));
@@ -70,7 +69,6 @@ public class UpdateCourseActivity extends AppCompatActivity implements View.OnCl
         course.setName(nameText);
         course.setStartDate(startDateText);
         course.setEndDate(endDateText);
-//        course.setTermID(termID);
 
         if (validate.length() == 0) {
             try {

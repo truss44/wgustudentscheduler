@@ -10,10 +10,13 @@ import android.arch.persistence.room.PrimaryKey;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 @Entity(tableName = "mentors",
         foreignKeys = @ForeignKey(entity = Course.class,
                 parentColumns = "id",
-                childColumns = "courseID"),
+                childColumns = "courseID",
+                onDelete = CASCADE),
         indices = {@Index(value = {"courseID"})})
 public class Mentor implements Serializable {
 

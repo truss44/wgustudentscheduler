@@ -27,6 +27,7 @@ import com.example.trussell.wgustudentscheduler.adapter.MentorsListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Mentor;
+import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.parcelable.ParcelableCourse;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
@@ -42,24 +43,13 @@ public class DetailsCourseActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private String termID;
-    private static Course course;
+    private static Term term = TermActivity.getTermData();
+    private static Course course = DetailsTermActivity.getCourseData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_details_course);
-
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                termID = null;
-            } else {
-                termID = extras.getString("termID");
-            }
-        } else {
-            termID = (String) savedInstanceState.getSerializable("termID");
-        }
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -125,10 +115,7 @@ public class DetailsCourseActivity extends AppCompatActivity {
     }
 
     public void updateCourse(View view) {
-        ParcelableCourse parcelableCourse = new ParcelableCourse(course);
         Intent detailsScreenIntent = new Intent(this, UpdateCourseActivity.class);
-        detailsScreenIntent.putExtra("courseData", parcelableCourse);
-        detailsScreenIntent.putExtra("termID", termID);
         startActivity(detailsScreenIntent);
     }
 
@@ -194,9 +181,7 @@ public class DetailsCourseActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                ParcelableCourse parcelableCourse = new ParcelableCourse(course);
                 Intent addmentorScreenIntent = new Intent(getApplicationContext(), AddMentorActivity.class);
-                addmentorScreenIntent.putExtra("courseData", parcelableCourse);
                 startActivity(addmentorScreenIntent);
                 return true;
         }
@@ -220,8 +205,6 @@ public class DetailsCourseActivity extends AppCompatActivity {
         }
 
         private void updateDetailsTab(View view) {
-            ParcelableCourse parcelableCourse = getActivity().getIntent().getParcelableExtra("courseData");
-            course = parcelableCourse.getCourse();
 
             TextView label1 = view.findViewById(R.id.label1);
             TextView label2 = view.findViewById(R.id.label2);

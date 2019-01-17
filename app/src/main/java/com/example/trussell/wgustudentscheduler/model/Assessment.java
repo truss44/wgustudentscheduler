@@ -14,10 +14,13 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 @Entity(tableName = "assessments",
         foreignKeys = @ForeignKey(entity = Term.class,
                 parentColumns = "id",
-                childColumns = "termID"),
+                childColumns = "termID",
+                onDelete = CASCADE),
         indices = {@Index(value = {"termID"})})
 public class Assessment implements Serializable {
 

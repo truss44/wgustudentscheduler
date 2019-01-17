@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
@@ -26,14 +25,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.trussell.wgustudentscheduler.adapter.CoursesListAdapter;
-import com.example.trussell.wgustudentscheduler.adapter.TermsListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
-import com.example.trussell.wgustudentscheduler.parcelable.ParcelableCourse;
 import com.example.trussell.wgustudentscheduler.parcelable.ParcelableTerm;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
-import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
 
@@ -44,7 +40,8 @@ public class DetailsTermActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private static Term term;
+    private static Term term = TermActivity.getTermData();
+    private static Course courseData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,9 +102,7 @@ public class DetailsTermActivity extends AppCompatActivity {
     }
 
     public void updateTerm(View view) {
-        ParcelableTerm parcelableTerm = new ParcelableTerm(term);
         Intent detailsScreenIntent = new Intent(this, UpdateTermActivity.class);
-        detailsScreenIntent.putExtra("termData", parcelableTerm);
         startActivity(detailsScreenIntent);
     }
 
@@ -176,7 +171,7 @@ public class DetailsTermActivity extends AppCompatActivity {
             case R.id.action_add:
                 ParcelableTerm parcelableTerm = new ParcelableTerm(term);
                 Intent addcourseScreenIntent = new Intent(getApplicationContext(), AddCourseActivity.class);
-                addcourseScreenIntent.putExtra("termData", parcelableTerm);
+                addcourseScreenIntent.putExtra("termID", Integer.toString(term.getId()));
                 startActivity(addcourseScreenIntent);
                 return true;
         }
@@ -200,8 +195,6 @@ public class DetailsTermActivity extends AppCompatActivity {
         }
 
         private void updateDetailsTab(View view) {
-            ParcelableTerm parcelableTerm = getActivity().getIntent().getParcelableExtra("termData");
-            term = parcelableTerm.getTerm();
 
             TextView label1 = view.findViewById(R.id.label1);
             TextView label2 = view.findViewById(R.id.label2);
@@ -238,17 +231,14 @@ public class DetailsTermActivity extends AppCompatActivity {
             recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), recyclerView, new RecyclerViewClickListener() {
                 @Override
                 public void onClick(View view, int position) {
-                    final Course course = coursesListAdapter.getItem(position);
-                    ParcelableCourse parcelableCourse = new ParcelableCourse(course);
+                    Course course = coursesListAdapter.getItem(position);
                     Intent detailsScreenIntent = new Intent(getContext(), DetailsCourseActivity.class);
-                    detailsScreenIntent.putExtra("courseData", parcelableCourse);
-                    detailsScreenIntent.putExtra("termID", Integer.toString(term.getId()));
+                    courseData = course;
                     startActivity(detailsScreenIntent);
                 }
 
                 @Override
-                public void onLongClick(final View view, final int position) {
-                }
+                public void onLongClick(final View view, final int position) {}
             }));
 
             emptyView = view.findViewById(R.id.emptyView);
@@ -284,6 +274,7 @@ public class DetailsTermActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.action_add:
                     Intent termScreenIntent = new Intent(getContext(), AddCourseActivity.class);
+                    termScreenIntent.putExtra("termID", Integer.toString(term.getId()));
                     startActivity(termScreenIntent);
                     return true;
             }
@@ -327,5 +318,9 @@ public class DetailsTermActivity extends AppCompatActivity {
         public int getCount() {
             return 2;
         }
+    }
+
+    public static Course getCourseData () {
+        return courseData;
     }
 }

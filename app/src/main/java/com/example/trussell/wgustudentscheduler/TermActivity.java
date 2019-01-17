@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.example.trussell.wgustudentscheduler.adapter.TermsListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Term;
-import com.example.trussell.wgustudentscheduler.parcelable.ParcelableTerm;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
 import com.example.trussell.wgustudentscheduler.util.Constants;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
@@ -31,6 +30,7 @@ public class TermActivity extends AppCompatActivity implements Constants {
     private RecyclerView recyclerView;
     private TermsListAdapter termsListAdapter;
     private TermRepository termRepository;
+    private static Term termData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,10 +44,9 @@ public class TermActivity extends AppCompatActivity implements Constants {
         recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-                final Term term = termsListAdapter.getItem(position);
-                ParcelableTerm parcelableTerm = new ParcelableTerm(term);
+                Term term = termsListAdapter.getItem(position);
+                termData = term;
                 Intent detailsScreenIntent = new Intent(getApplicationContext(), DetailsTermActivity.class);
-                detailsScreenIntent.putExtra("termData", parcelableTerm);
                 startActivity(detailsScreenIntent);
             }
 
@@ -143,5 +142,9 @@ public class TermActivity extends AppCompatActivity implements Constants {
                 });
 
         builder.create().show();
+    }
+
+    public static Term getTermData () {
+        return termData;
     }
 }

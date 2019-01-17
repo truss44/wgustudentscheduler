@@ -13,10 +13,13 @@ import com.example.trussell.wgustudentscheduler.util.TimestampConverter;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import static android.arch.persistence.room.ForeignKey.CASCADE;
+
 @Entity(tableName = "notes",
         foreignKeys = @ForeignKey(entity = Course.class,
-        parentColumns = "id",
-        childColumns = "courseID"),
+                parentColumns = "id",
+                childColumns = "courseID",
+                onDelete = CASCADE),
         indices = {@Index(value = {"courseID"})})
 public class Note implements Serializable {
 
