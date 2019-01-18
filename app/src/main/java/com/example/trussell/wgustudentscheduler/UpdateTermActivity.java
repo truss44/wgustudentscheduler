@@ -14,7 +14,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.trussell.wgustudentscheduler.model.Term;
-import com.example.trussell.wgustudentscheduler.parcelable.ParcelableTerm;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 

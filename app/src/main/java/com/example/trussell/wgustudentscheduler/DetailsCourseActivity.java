@@ -22,10 +22,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.trussell.wgustudentscheduler.adapter.AssessmentsListAdapter;
 import com.example.trussell.wgustudentscheduler.adapter.MentorsListAdapter;
+import com.example.trussell.wgustudentscheduler.model.Assessment;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Mentor;
 import com.example.trussell.wgustudentscheduler.model.Term;
+import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
@@ -41,6 +44,7 @@ public class DetailsCourseActivity extends AppCompatActivity {
     private ViewPager mViewPager;
     private static Term term = TermActivity.getTermData();
     private static Course course = DetailsTermActivity.getCourseData();
+    private static Assessment assessmentData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,19 +215,16 @@ public class DetailsCourseActivity extends AppCompatActivity {
             TextView label2 = view.findViewById(R.id.label2);
             TextView label3 = view.findViewById(R.id.label3);
             TextView label4 = view.findViewById(R.id.label4);
-            TextView label5 = view.findViewById(R.id.label5);
 
             TextView name = view.findViewById(R.id.nameTextView);
             TextView status = view.findViewById(R.id.statusTextView);
             TextView startDate = view.findViewById(R.id.startDateTextView);
             TextView endDate = view.findViewById(R.id.endDateTextView);
-            TextView goalDate = view.findViewById(R.id.goalDateTextView);
 
             String readableStart = DateFormat.getDateInstance(DateFormat.LONG).format(course.getStartDate());
             String readableEnd = DateFormat.getDateInstance(DateFormat.LONG).format(course.getEndDate());
-            String readableGoal = DateFormat.getDateInstance(DateFormat.LONG).format(course.getGoalDate());
 
-            TextView[] textViewArray = { label1, label2, label3, label4, label5 };
+            TextView[] textViewArray = { label1, label2, label3, label4 };
             for (TextView tv : textViewArray) {
                 tv.append(":");
             }
@@ -232,18 +233,36 @@ public class DetailsCourseActivity extends AppCompatActivity {
             status.setText(course.getStatus());
             startDate.setText(readableStart);
             endDate.setText(readableEnd);
-            goalDate.setText(readableGoal);
         }
 
         TextView emptyView;
         RecyclerView recyclerView;
-        MentorsListAdapter mentorsListAdapter = null;
-        MentorRepository mentorRepository;
 
+        AssessmentsListAdapter assessmentsListAdapter = null;
+        AssessmentRepository assessmentRepository;
         private void updateAssessmentsTab(View view) {
+            assessmentRepository = new AssessmentRepository(getContext());
 
+            recyclerView = view.findViewById(R.id.itemsList);
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1 , StaggeredGridLayoutManager.VERTICAL));
+            recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), recyclerView, new RecyclerViewClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    AppUtils.showShortMessage(getContext(), "testing");
+                }
+
+                @Override
+                public void onLongClick(final View view, final int position) {
+                }
+            }));
+
+            emptyView = view.findViewById(R.id.emptyView);
+
+            updateAssessmentsList(course.getId());
         }
 
+        MentorsListAdapter mentorsListAdapter = null;
+        MentorRepository mentorRepository;
         private void updateMentorsTab(View view) {
 
             mentorRepository = new MentorRepository(getContext());
@@ -268,6 +287,23 @@ public class DetailsCourseActivity extends AppCompatActivity {
 
         private void updateNotesTab(View view) {
             
+        }
+
+        private void updateAssessmentsList(int id) {
+            assessmentRepository.fetchAssessmentsByCourse(id).observe(this, new Observer<List<Assessment>>() {
+                @Override
+                public void onChanged(@Nullable List<Assessment> assessments) {
+                    if (assessments != null && assessments.size() > 0) {
+                        emptyView.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        if (assessmentsListAdapter == null) {
+                            assessmentsListAdapter = new AssessmentsListAdapter(assessments);
+                            recyclerView.setAdapter(assessmentsListAdapter);
+
+                        } else assessmentsListAdapter.addAssessments(assessments);
+                    } else updateEmptyView();
+                }
+            });
         }
 
         private void updateMentorsList(int id) {
@@ -338,12 +374,6 @@ public class DetailsCourseActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        recreate();
-    }
-
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -359,5 +389,15 @@ public class DetailsCourseActivity extends AppCompatActivity {
         public int getCount() {
             return 4;
         }
+    }
+
+    public static Assessment getAssessmentData () {
+        return assessmentData;
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        recreate();
     }
 }

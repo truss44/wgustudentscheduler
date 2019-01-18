@@ -15,28 +15,29 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
-import com.example.trussell.wgustudentscheduler.model.Term;
+import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
 import java.util.Calendar;
 import java.util.Date;
 
-public class AddCourseActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddAssessmentActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText name, startDate, endDate;
-    private CheckBox alertStart, alertEnd;
+    private EditText name, dueDate, goalDate;
+    private CheckBox alertGoal;
     private Button saveButton, resetButton;
-    private Spinner statusSpinner;
+    private Spinner typeSpinner;
 
-    private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
+    private DatePickerDialog dueDatePickerDialog, goalDatePickerDialog;
 
-    private static Term term = TermActivity.getTermData();
+    private static Course course = DetailsTermActivity.getCourseData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_course);
+        setContentView(R.layout.activity_add_assessment);
         findViewsById();
         setDateTimeField();
     }
@@ -44,20 +45,19 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
     private void findViewsById() {
         name = findViewById(R.id.nameTextBox);
 
-        statusSpinner = findViewById(R.id.statusSpinner);
+        typeSpinner = findViewById(R.id.typeSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.statusArray, android.R.layout.simple_spinner_item);
+                R.array.typeArray, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        statusSpinner.setAdapter(adapter);
+        typeSpinner.setAdapter(adapter);
 
-        startDate = findViewById(R.id.startTextBox);
-        startDate.setInputType(InputType.TYPE_NULL);
+        dueDate = findViewById(R.id.dueTextBox);
+        dueDate.setInputType(InputType.TYPE_NULL);
 
-        endDate = findViewById(R.id.endTextBox);
-        endDate.setInputType(InputType.TYPE_NULL);
+        goalDate = findViewById(R.id.goalTextBox);
+        goalDate.setInputType(InputType.TYPE_NULL);
 
-        alertStart = findViewById(R.id.alertStartCheckBox);
-        alertEnd = findViewById(R.id.alertEndCheckBox);
+        alertGoal = findViewById(R.id.alertGoalCheckBox);
 
         saveButton = findViewById(R.id.saveButton);
         resetButton = findViewById(R.id.resetButton);
@@ -66,17 +66,16 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
     public void submitData(View view) {
         String validate = isValid();
         String nameText = name.getText().toString();
-        String spinnerText = statusSpinner.getSelectedItem().toString();
-        Date startDateText = AppUtils.formatStringToDate(startDate.getText().toString());
-        Date endDateText = AppUtils.formatStringToDate(endDate.getText().toString());
-        int alertStartInt = AppUtils.booleanToInteger(alertStart.isChecked());
-        int alertEndInt = AppUtils.booleanToInteger(alertEnd.isChecked());
+        String spinnerText = typeSpinner.getSelectedItem().toString();
+        Date dueDateText = AppUtils.formatStringToDate(dueDate.getText().toString());
+        Date goalDateText = AppUtils.formatStringToDate(goalDate.getText().toString());
+        int alertGoalInt = AppUtils.booleanToInteger(alertGoal.isChecked());
 
         if (validate.length() == 0) {
             try {
-                CourseRepository courseRepository = new CourseRepository(getApplicationContext());
-                courseRepository.insertCourse(nameText, spinnerText, startDateText, endDateText,
-                        alertStartInt, alertEndInt, term.getId());
+                AssessmentRepository assessmentRepository = new AssessmentRepository(getApplicationContext());
+                assessmentRepository.insertAssessment(nameText, spinnerText, dueDateText,
+                        goalDateText, alertGoalInt, course.getId());
             } catch (Exception e) {
                 AppUtils.showLongMessage(this, e.toString());
             }
@@ -91,33 +90,32 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
     public String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
-        String spinnerText = statusSpinner.getSelectedItem().toString();
-        String startDateText = startDate.getText().toString();
-        String endDateText = endDate.getText().toString();
+        String spinnerText = typeSpinner.getSelectedItem().toString();
+        String dueDateText = dueDate.getText().toString();
+        String goalDateText = goalDate.getText().toString();
 
         if (AppUtils.isNullOrEmpty(nameText)) {
             errorMsg.append(getString(R.string.valid_name) + "\n");
         }
 
         if (AppUtils.isNullOrEmpty(spinnerText)) {
-            errorMsg.append(getString(R.string.valid_status) + "\n");
+            errorMsg.append(getString(R.string.valid_assessment_type) + "\n");
         }
 
-        if (AppUtils.isNullOrEmpty(startDateText) || !AppUtils.dateValidation(startDateText)) {
-            errorMsg.append(getString(R.string.valid_start_date) + "\n");
+        if (AppUtils.isNullOrEmpty(dueDateText) || !AppUtils.dateValidation(dueDateText)) {
+            errorMsg.append(getString(R.string.valid_due_date) + "\n");
         }
 
-        if (AppUtils.isNullOrEmpty(endDateText) || !AppUtils.dateValidation(endDateText)) {
-            errorMsg.append(getString(R.string.valid_end_date) + "\n");
+        if (AppUtils.isNullOrEmpty(goalDateText) || !AppUtils.dateValidation(goalDateText)) {
+            errorMsg.append(getString(R.string.valid_goal_date) + "\n");
         }
 
         try {
-            if (AppUtils.formatStringToDate(startDateText).after(AppUtils.formatStringToDate(endDateText)) ||
-                    AppUtils.formatStringToDate(startDateText).equals(AppUtils.formatStringToDate(endDateText))) {
-                errorMsg.append(getString(R.string.date_after_start) + "\n");
+            if (AppUtils.formatStringToDate(goalDateText).after(AppUtils.formatStringToDate(dueDateText))) {
+                errorMsg.append(getString(R.string.goal_date_before_due_date) + "\n");
             }
         } catch (Exception e) {
-            errorMsg.append(getString(R.string.proper_start_end) + "\n");
+            errorMsg.append(getString(R.string.proper_goal_date) + "\n");
         }
 
         return errorMsg.toString();
@@ -129,34 +127,33 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
 
     public void resetForm(View view) {
         name.setText("");
-        statusSpinner.setSelection(0);
-        startDate.setText("");
-        endDate.setText("");
-        alertStart.setChecked(true);
-        alertEnd.setChecked(true);
+        typeSpinner.setSelection(0);
+        dueDate.setText("");
+        goalDate.setText("");
+        alertGoal.setChecked(true);
     }
 
     private void setDateTimeField() {
-        startDate.setOnClickListener(this);
-        endDate.setOnClickListener(this);
+        dueDate.setOnClickListener(this);
+        goalDate.setOnClickListener(this);
 
         Calendar newCalendar = Calendar.getInstance();
-        startDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
+        dueDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                startDate.setText(AppUtils.getFormattedDateString(newDate.getTime()));
+                dueDate.setText(AppUtils.getFormattedDateString(newDate.getTime()));
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
-        endDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
+        goalDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
                 Calendar newDate = Calendar.getInstance();
                 newDate.set(year, monthOfYear, dayOfMonth);
-                endDate.setText(AppUtils.getFormattedDateString(newDate.getTime()));
+                goalDate.setText(AppUtils.getFormattedDateString(newDate.getTime()));
             }
 
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -169,10 +166,10 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(mainLayout.getWindowToken(), 0);
 
-        if (view == startDate) {
-            startDatePickerDialog.show();
-        } else if (view == endDate) {
-            endDatePickerDialog.show();
+        if (view == dueDate) {
+            dueDatePickerDialog.show();
+        } else if (view == goalDate) {
+            goalDatePickerDialog.show();
         }
     }
 }

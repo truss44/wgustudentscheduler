@@ -21,16 +21,15 @@ public class AssessmentRepository implements Constants {
                 .fallbackToDestructiveMigration().build();
     }
 
-    public void insertAssessment(String name, Date startDate, Date endDate,
-                                 Date alertStart, Date alertEnd, int termID) {
+    public void insertAssessment(String name, String type, Date dueDate, Date goalDate, int alertGoal, int courseID) {
 
         Assessment assessment = new Assessment();
         assessment.setName(name);
-        assessment.setStartDate(startDate);
-        assessment.setEndDate(endDate);
-        assessment.setAlertStart(alertStart);
-        assessment.setAlertEnd(alertEnd);
-        assessment.setTermID(termID);
+        assessment.setType(type);
+        assessment.setDueDate(dueDate);
+        assessment.setGoalDate(goalDate);
+        assessment.setAlertGoal(alertGoal);
+        assessment.setCourseID(courseID);
 
         insertAssessment(assessment);
     }
@@ -59,23 +58,27 @@ public class AssessmentRepository implements Constants {
 
     @SuppressLint("StaticFieldLeak")
     public void deleteAssessment(final int id) {
-        final LiveData<Assessment> assessment = getAssessment(id);
+        final Assessment assessment = getAssessment(id);
         if (assessment != null) {
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    schedulerDatabase.daoAssessment().deleteAssessment(assessment.getValue());
+                    schedulerDatabase.daoAssessment().deleteAssessment(assessment);
                     return null;
                 }
             }.execute();
         }
     }
 
-    private LiveData<Assessment> getAssessment(int id) {
+    private Assessment getAssessment(int id) {
         return schedulerDatabase.daoAssessment().getAssessment(id);
     }
 
     public LiveData<List<Assessment>> getAssessments() {
         return schedulerDatabase.daoAssessment().fetchAllAssessments();
+    }
+
+    public LiveData<List<Assessment>> fetchAssessmentsByCourse(int id) {
+        return schedulerDatabase.daoAssessment().fetchAssessmentsByCourse(id);
     }
 }

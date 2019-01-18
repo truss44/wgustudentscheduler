@@ -17,11 +17,11 @@ import java.util.Date;
 import static android.arch.persistence.room.ForeignKey.CASCADE;
 
 @Entity(tableName = "assessments",
-        foreignKeys = @ForeignKey(entity = Term.class,
+        foreignKeys = @ForeignKey(entity = Course.class,
                 parentColumns = "id",
-                childColumns = "termID",
+                childColumns = "courseID",
                 onDelete = CASCADE),
-        indices = {@Index(value = {"termID"})})
+        indices = {@Index(value = {"courseID"})})
 public class Assessment implements Serializable {
 
     @PrimaryKey(autoGenerate = true)
@@ -31,25 +31,22 @@ public class Assessment implements Serializable {
     @ColumnInfo(name = "name")
     private String name;
 
-    @ColumnInfo(name = "startDate")
-    @TypeConverters({TimestampConverter.class})
-    private Date startDate;
+    @ColumnInfo(name = "type")
+    private String type;
 
-    @ColumnInfo(name = "endDate")
+    @ColumnInfo(name = "dueDate")
     @TypeConverters({TimestampConverter.class})
-    private Date endDate;
+    private Date dueDate;
 
-    @ColumnInfo(name = "alertStart")
+    @ColumnInfo(name = "goalDate")
     @TypeConverters({TimestampConverter.class})
-    private Date alertStart;
+    private Date goalDate;
 
-    @ColumnInfo(name = "alertEnd")
-    @TypeConverters({TimestampConverter.class})
-    private Date alertEnd;
+    @ColumnInfo(name = "alertGoal")
+    private int alertGoal;
 
-    @ColumnInfo(name = "termID")
-    @TypeConverters({TimestampConverter.class})
-    private int termID;
+    @ColumnInfo(name = "courseID")
+    private int courseID;
 
     @Ignore
     private static ArrayList<Assessment> assessmentsList;
@@ -70,44 +67,44 @@ public class Assessment implements Serializable {
         this.name = name;
     }
 
-    public Date getStartDate() {
-        return startDate;
+    public String getType() {
+        return type;
     }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public Date getDueDate() {
+        return dueDate;
     }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+    public void setDueDate(Date dueDate) {
+        this.dueDate = dueDate;
     }
 
-    public Date getAlertStart() {
-        return alertStart;
+    public Date getGoalDate() {
+        return goalDate;
     }
 
-    public void setAlertStart(Date alertStart) {
-        this.alertStart = alertStart;
+    public void setGoalDate(Date alertStart) {
+        this.goalDate = goalDate;
     }
 
-    public Date getAlertEnd() {
-        return alertEnd;
+    public int getAlertGoal() {
+        return alertGoal;
     }
 
-    public void setAlertEnd(Date alertEnd) {
-        this.alertEnd = alertEnd;
+    public void setAlertGoal(int alertGoal) {
+        this.alertGoal = alertGoal;
     }
 
-    public int getTermID() {
-        return termID;
+    public int getCourseID() {
+        return courseID;
     }
 
-    public void setTermID(int termID) {
-        this.termID = termID;
+    public void setCourseID(int termID) {
+        this.courseID = courseID;
     }
 
     public static ArrayList<Assessment> getAssessmentsList() {

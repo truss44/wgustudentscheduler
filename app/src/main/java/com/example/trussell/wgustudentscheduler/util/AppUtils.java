@@ -83,4 +83,13 @@ public class AppUtils {
     public static void showLongMessage(Context context, String message) {
         Toast.makeText(context, message, Toast.LENGTH_LONG).show();
     }
+
+    public static int booleanToInteger(boolean trueFalse) {
+        int output;
+        return output = trueFalse ? 1 : 0;
+    }
+
+    public static boolean integerToBoolean(int trueFalse) {
+        return trueFalse == 1;
+    }
 }

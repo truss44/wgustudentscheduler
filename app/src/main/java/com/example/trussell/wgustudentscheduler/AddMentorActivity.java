@@ -1,27 +1,15 @@
 package com.example.trussell.wgustudentscheduler;
 
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.text.InputType;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
-import com.example.trussell.wgustudentscheduler.parcelable.ParcelableCourse;
-import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
-
-import java.util.Calendar;
-import java.util.Date;
 
 public class AddMentorActivity extends AppCompatActivity {
 

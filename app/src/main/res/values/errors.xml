@@ -11,4 +11,7 @@
     <string name="validate_between_start_end_goal">Please enter a goal date that occurs BETWEEN the start/end dates</string>
     <string name="proper_goal_date">Please enter a proper goal date</string>
     <string name="valid_status">Please enter a valid status</string>
+    <string name="valid_assessment_type">Please enter a valid assessment type</string>
+    <string name="valid_due_date">Please enter a valid due date</string>
+    <string name="goal_date_before_due_date">Please enter a goal date that is BEFORE the due date</string>
 </resources>

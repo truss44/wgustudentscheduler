@@ -37,4 +37,11 @@
     <string name="goal_completion_date">Goal Completion Date</string>
     <string name="status">Status</string>
     <string name="assessments">Assessments</string>
+    <string name="alert_start_date">Alert Start Date</string>
+    <string name="alert_end_date">Alert End Date</string>
+    <string name="due_date">Due Date</string>
+    <string name="type">Type</string>
+    <string name="alert_goal_date">Alert Goal Date</string>
+    <string name="add_assessment">Add Assessment</string>
+    <string name="update_assessment">Update Assessment</string>
 </resources>

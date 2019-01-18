@@ -21,14 +21,16 @@ public class CourseRepository implements Constants {
                 .fallbackToDestructiveMigration().build();
     }
 
-    public void insertCourse(String name, String status, Date startDate, Date endDate, Date goalDate, int termID) {
+    public void insertCourse(String name, String status, Date startDate, Date endDate,
+                             int alertStart, int alertEnd, int termID) {
 
         Course course = new Course();
         course.setName(name);
         course.setStatus(status);
         course.setStartDate(startDate);
         course.setEndDate(endDate);
-        course.setGoalDate(goalDate);
+        course.setAlertStart(alertStart);
+        course.setAlertEnd(alertEnd);
         course.setTermID(termID);
 
         insertCourse(course);

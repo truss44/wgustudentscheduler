@@ -6,4 +6,9 @@
         <item>Dropped</item>
         <item>Plan to Take</item>
     </string-array>
+
+    <string-array name="typeArray">
+        <item>Objective Assessment</item>
+        <item>Performance Assessment</item>
+    </string-array>
 </resources>

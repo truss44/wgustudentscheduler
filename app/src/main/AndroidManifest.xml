@@ -48,6 +48,16 @@
             android:label="@string/course_details"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
+            android:name=".AddAssessmentActivity"
+            android:label="@string/add_assessment"
+            android:noHistory="true"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UpdateAssessmentActivity"
+            android:label="@string/update_assessment"
+            android:noHistory="true"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".AddMentorActivity"
             android:label="@string/add_mentor"
             android:noHistory="true"

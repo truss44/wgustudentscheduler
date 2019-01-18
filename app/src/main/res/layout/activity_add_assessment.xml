@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/light_gray"
-    tools:context=".AddCourseActivity">
+    tools:context=".AddAssessmentActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,15 +47,15 @@
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:labelFor="@+id/statusSpinner"
-                android:text="@string/status" />
+                android:labelFor="@+id/typeSpinner"
+                android:text="@string/type" />
 
             <Spinner
-                android:id="@+id/statusSpinner"
+                android:id="@+id/typeSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:entries="@array/statusArray" />
+                android:entries="@array/typeArray" />
 
         </LinearLayout>
 
@@ -69,11 +69,11 @@
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:labelFor="@+id/startTextBox"
-                android:text="@string/start_date" />
+                android:labelFor="@+id/dueTextBox"
+                android:text="@string/due_date" />
 
             <EditText
-                android:id="@+id/startTextBox"
+                android:id="@+id/dueTextBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -81,7 +81,7 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="@string/start_date"
+                android:hint="@string/due_date"
                 android:inputType="date" />
 
         </LinearLayout>
@@ -96,11 +96,11 @@
                 android:layout_width="190dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:labelFor="@+id/endTextBox"
-                android:text="@string/end_date" />
+                android:labelFor="@+id/goalTextBox"
+                android:text="@string/goal_date" />
 
             <EditText
-                android:id="@+id/endTextBox"
+                android:id="@+id/goalTextBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -108,7 +108,7 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:hint="@string/end_date"
+                android:hint="@string/goal_date"
                 android:inputType="date" />
 
         </LinearLayout>
@@ -121,20 +121,12 @@
             android:orientation="horizontal">
 
             <CheckBox
-                android:id="@+id/alertStartCheckBox"
+                android:id="@+id/alertGoalCheckBox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:checked="true"
-                android:text="@string/alert_start_date" />
-
-            <CheckBox
-                android:id="@+id/alertEndCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="true"
-                android:text="@string/alert_end_date" />
+                android:text="@string/alert_goal_date" />
         </LinearLayout>
 
         <LinearLayout

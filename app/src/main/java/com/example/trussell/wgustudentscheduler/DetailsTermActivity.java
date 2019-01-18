@@ -27,7 +27,6 @@ import android.widget.TextView;
 import com.example.trussell.wgustudentscheduler.adapter.CoursesListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
-import com.example.trussell.wgustudentscheduler.parcelable.ParcelableTerm;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;

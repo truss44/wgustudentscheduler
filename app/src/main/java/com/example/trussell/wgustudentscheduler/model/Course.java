@@ -42,12 +42,11 @@ public class Course implements Serializable {
     @TypeConverters({TimestampConverter.class})
     private Date endDate;
 
-    @ColumnInfo(name = "goalDate")
-    @TypeConverters({TimestampConverter.class})
-    private Date goalDate;
+    @ColumnInfo(name = "alertStart")
+    private int alertStart;
 
-    @ColumnInfo(name = "alertGoal")
-    private int alertGoal;
+    @ColumnInfo(name = "alertEnd")
+    private int alertEnd;
 
     @ColumnInfo(name = "termID")
     private int termID;
@@ -95,20 +94,20 @@ public class Course implements Serializable {
         this.endDate = endDate;
     }
 
-    public Date getGoalDate() {
-        return goalDate;
+    public int getAlertStart() {
+        return alertStart;
     }
 
-    public void setGoalDate(Date goalDate) {
-        this.goalDate = goalDate;
+    public void setAlertStart(int alertStart) {
+        this.alertStart = alertStart;
     }
 
-    public int getAlertGoal() {
-        return alertGoal;
+    public int getAlertEnd() {
+        return alertEnd;
     }
 
-    public void setAlertGoal(int alertGoal) {
-        this.alertGoal = alertGoal;
+    public void setAlertEnd(int alertEnd) {
+        this.alertEnd = alertEnd;
     }
 
     public int getTermID() {

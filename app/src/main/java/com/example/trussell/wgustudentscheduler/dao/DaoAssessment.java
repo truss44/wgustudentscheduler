@@ -21,9 +21,11 @@ public interface DaoAssessment {
     @Query("SELECT * FROM assessments ORDER BY id desc")
     LiveData<List<Assessment>> fetchAllAssessments();
 
+    @Query("SELECT * FROM assessments WHERE courseID = :courseID ORDER BY id desc")
+    LiveData<List<Assessment>> fetchAssessmentsByCourse(int courseID);
 
     @Query("SELECT * FROM assessments WHERE id = :assessmentID")
-    LiveData<Assessment> getAssessment(int assessmentID);
+    Assessment getAssessment(int assessmentID);
 
 
     @Update
