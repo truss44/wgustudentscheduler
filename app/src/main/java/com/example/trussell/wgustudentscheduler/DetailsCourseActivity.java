@@ -22,15 +22,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.trussell.wgustudentscheduler.adapter.CoursesListAdapter;
 import com.example.trussell.wgustudentscheduler.adapter.MentorsListAdapter;
-import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Mentor;
 import com.example.trussell.wgustudentscheduler.model.Term;
-import com.example.trussell.wgustudentscheduler.parcelable.ParcelableCourse;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
-import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
 import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
@@ -75,12 +71,18 @@ public class DetailsCourseActivity extends AppCompatActivity {
 
                     case 1: {
                         mViewPager.setCurrentItem(1);
-                        toolbar.setSubtitle(R.string.mentors);
+                        toolbar.setSubtitle(R.string.assessments);
                         break;
                     }
 
                     case 2: {
                         mViewPager.setCurrentItem(2);
+                        toolbar.setSubtitle(R.string.mentors);
+                        break;
+                    }
+
+                    case 3: {
+                        mViewPager.setCurrentItem(3);
                         toolbar.setSubtitle(R.string.notes);
                         break;
                     }
@@ -111,6 +113,10 @@ public class DetailsCourseActivity extends AppCompatActivity {
             case 2: {
                 mViewPager.setCurrentItem(2);
             }
+
+            case 3: {
+                mViewPager.setCurrentItem(3);
+            }
         }
     }
 
@@ -122,14 +128,15 @@ public class DetailsCourseActivity extends AppCompatActivity {
     public void removeCourse(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
-        builder.setMessage(R.string.remove_course);
+        builder.setMessage(R.string.remove_course_alert);
         builder.setPositiveButton(android.R.string.yes,
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+
                         Thread thread = new Thread(new Runnable(){
                             public void run() {
-                                CourseRepository courseRepository = new CourseRepository(DetailsCourseActivity.this);
+                                CourseRepository courseRepository = new CourseRepository(getBaseContext());
                                 courseRepository.deleteCourse(course.getId());
                             }
                         });
@@ -154,12 +161,6 @@ public class DetailsCourseActivity extends AppCompatActivity {
                 });
 
         builder.create().show();
-    }
-
-    @Override
-    public void onRestart() {
-        super.onRestart();
-        recreate();
     }
 
     @Override
@@ -209,28 +210,39 @@ public class DetailsCourseActivity extends AppCompatActivity {
             TextView label1 = view.findViewById(R.id.label1);
             TextView label2 = view.findViewById(R.id.label2);
             TextView label3 = view.findViewById(R.id.label3);
+            TextView label4 = view.findViewById(R.id.label4);
+            TextView label5 = view.findViewById(R.id.label5);
 
             TextView name = view.findViewById(R.id.nameTextView);
+            TextView status = view.findViewById(R.id.statusTextView);
             TextView startDate = view.findViewById(R.id.startDateTextView);
             TextView endDate = view.findViewById(R.id.endDateTextView);
+            TextView goalDate = view.findViewById(R.id.goalDateTextView);
 
             String readableStart = DateFormat.getDateInstance(DateFormat.LONG).format(course.getStartDate());
             String readableEnd = DateFormat.getDateInstance(DateFormat.LONG).format(course.getEndDate());
+            String readableGoal = DateFormat.getDateInstance(DateFormat.LONG).format(course.getGoalDate());
 
-            TextView[] textViewArray = { label1, label2, label3 };
+            TextView[] textViewArray = { label1, label2, label3, label4, label5 };
             for (TextView tv : textViewArray) {
                 tv.append(":");
             }
 
             name.setText(course.getName());
+            status.setText(course.getStatus());
             startDate.setText(readableStart);
             endDate.setText(readableEnd);
+            goalDate.setText(readableGoal);
         }
 
         TextView emptyView;
         RecyclerView recyclerView;
         MentorsListAdapter mentorsListAdapter = null;
         MentorRepository mentorRepository;
+
+        private void updateAssessmentsTab(View view) {
+
+        }
 
         private void updateMentorsTab(View view) {
 
@@ -305,12 +317,18 @@ public class DetailsCourseActivity extends AppCompatActivity {
                 }
 
                 case 2: {
+                    rootView = inflater.inflate(R.layout.assessments_tab_course, container, false);
+                    updateAssessmentsTab(rootView);
+                    break;
+                }
+
+                case 3: {
                     rootView = inflater.inflate(R.layout.mentors_tab_course, container, false);
                     updateMentorsTab(rootView);
                     break;
                 }
 
-                case 3: {
+                case 4: {
                     rootView = inflater.inflate(R.layout.notes_tab_course, container, false);
                     updateNotesTab(rootView);
                     break;
@@ -318,6 +336,12 @@ public class DetailsCourseActivity extends AppCompatActivity {
             }
             return rootView;
         }
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        recreate();
     }
 
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
@@ -333,7 +357,7 @@ public class DetailsCourseActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return 3;
+            return 4;
         }
     }
 }

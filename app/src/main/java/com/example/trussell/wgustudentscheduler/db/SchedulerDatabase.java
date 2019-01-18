@@ -14,13 +14,15 @@ import com.example.trussell.wgustudentscheduler.model.Mentor;
 import com.example.trussell.wgustudentscheduler.model.Note;
 import com.example.trussell.wgustudentscheduler.model.Term;
 
+import static com.example.trussell.wgustudentscheduler.util.Constants.DB_VERSION;
+
 @Database(entities = {
         Term.class,
         Course.class,
         Assessment.class,
         Mentor.class,
         Note.class
-}, version = 5, exportSchema = false)
+}, version = DB_VERSION, exportSchema = false)
 
 public abstract class SchedulerDatabase extends RoomDatabase {
 

@@ -21,12 +21,14 @@ public class CourseRepository implements Constants {
                 .fallbackToDestructiveMigration().build();
     }
 
-    public void insertCourse(String name, Date startDate, Date endDate, int termID) {
+    public void insertCourse(String name, String status, Date startDate, Date endDate, Date goalDate, int termID) {
 
         Course course = new Course();
         course.setName(name);
+        course.setStatus(status);
         course.setStartDate(startDate);
         course.setEndDate(endDate);
+        course.setGoalDate(goalDate);
         course.setTermID(termID);
 
         insertCourse(course);
@@ -56,19 +58,19 @@ public class CourseRepository implements Constants {
 
     @SuppressLint("StaticFieldLeak")
     public void deleteCourse(final int id) {
-        final LiveData<Course> course = getCourse(id);
+        final Course course = getCourse(id);
         if (course != null) {
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    schedulerDatabase.daoCourse().deleteCourse(course.getValue());
+                    schedulerDatabase.daoCourse().deleteCourse(course);
                     return null;
                 }
             }.execute();
         }
     }
 
-    private LiveData<Course> getCourse(int id) {
+    private Course getCourse(int id) {
         return schedulerDatabase.daoCourse().getCourse(id);
     }
 

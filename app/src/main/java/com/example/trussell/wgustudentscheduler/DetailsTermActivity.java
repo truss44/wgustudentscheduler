@@ -145,12 +145,6 @@ public class DetailsTermActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRestart() {
-        super.onRestart();
-        recreate();
-    }
-
-    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         MenuItem menuItem = menu.findItem(R.id.action_add);
         CharSequence cs = getString(R.string.add_course);
@@ -169,9 +163,7 @@ public class DetailsTermActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                ParcelableTerm parcelableTerm = new ParcelableTerm(term);
                 Intent addcourseScreenIntent = new Intent(getApplicationContext(), AddCourseActivity.class);
-                addcourseScreenIntent.putExtra("termID", Integer.toString(term.getId()));
                 startActivity(addcourseScreenIntent);
                 return true;
         }
@@ -322,5 +314,11 @@ public class DetailsTermActivity extends AppCompatActivity {
 
     public static Course getCourseData () {
         return courseData;
+    }
+
+    @Override
+    public void onRestart() {
+        super.onRestart();
+        recreate();
     }
 }

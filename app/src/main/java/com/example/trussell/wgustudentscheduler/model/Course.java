@@ -31,6 +31,9 @@ public class Course implements Serializable {
     @ColumnInfo(name = "name")
     private String name;
 
+    @ColumnInfo(name = "status")
+    private String status;
+
     @ColumnInfo(name = "startDate")
     @TypeConverters({TimestampConverter.class})
     private Date startDate;
@@ -66,6 +69,14 @@ public class Course implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Date getStartDate() {

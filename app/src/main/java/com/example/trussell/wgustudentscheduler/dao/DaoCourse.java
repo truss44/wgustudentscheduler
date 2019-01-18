@@ -25,7 +25,7 @@ public interface DaoCourse {
     LiveData<List<Course>> fetchCoursesByTerm(int termID);
 
     @Query("SELECT * FROM courses WHERE id = :courseID")
-    LiveData<Course> getCourse(int courseID);
+    Course getCourse(int courseID);
 
 
     @Update
