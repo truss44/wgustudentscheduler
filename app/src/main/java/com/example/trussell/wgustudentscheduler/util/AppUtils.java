@@ -1,12 +1,7 @@
 package com.example.trussell.wgustudentscheduler.util;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.support.v7.widget.PopupMenu;
 import android.text.TextUtils;
-import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import java.text.ParseException;

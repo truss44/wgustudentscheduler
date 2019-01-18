@@ -3,8 +3,9 @@ package com.example.trussell.wgustudentscheduler.util.diff;
 import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 
-import java.util.List;
 import com.example.trussell.wgustudentscheduler.model.Term;
+
+import java.util.List;
 
 public class TermDiffUtil extends DiffUtil.Callback {
 

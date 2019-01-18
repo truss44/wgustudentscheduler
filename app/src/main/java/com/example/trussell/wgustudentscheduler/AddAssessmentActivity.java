@@ -17,7 +17,6 @@ import android.widget.Spinner;
 
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
-import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
 import java.util.Calendar;
