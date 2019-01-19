@@ -2,6 +2,7 @@ package com.example.trussell.wgustudentscheduler.util;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.text.format.DateFormat;
 import android.widget.Toast;
 
 import java.text.ParseException;
@@ -49,6 +50,16 @@ public class AppUtils {
         }
 
         return returnDate;
+    }
+
+    public static Calendar calendarFormat(String date) throws ParseException {
+        Calendar cal = Calendar.getInstance();
+        if (!isNullOrEmpty(date)) {
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.US);
+            cal.setTime(sdf.parse(date));
+        }
+
+        return cal;
     }
 
     public static boolean dateValidation(String date) {

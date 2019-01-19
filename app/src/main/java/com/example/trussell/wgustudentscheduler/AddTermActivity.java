@@ -9,13 +9,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -31,7 +31,12 @@ public class AddTermActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_term);
         findViewsById();
-        setDateTimeField();
+
+        try {
+            setDateTimeField();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void findViewsById() {
@@ -103,11 +108,13 @@ public class AddTermActivity extends AppCompatActivity implements View.OnClickLi
         endDate.setText("");
     }
 
-    private void setDateTimeField() {
+    private void setDateTimeField() throws ParseException {
         startDate.setOnClickListener(this);
         endDate.setOnClickListener(this);
 
-        Calendar newCalendar = Calendar.getInstance();
+        Calendar startDateCal = AppUtils.calendarFormat(startDate.getText().toString());
+        Calendar endDateCal = AppUtils.calendarFormat(endDate.getText().toString());
+
         startDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -116,7 +123,7 @@ public class AddTermActivity extends AppCompatActivity implements View.OnClickLi
                 startDate.setText(AppUtils.getFormattedDateString(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },startDateCal.get(Calendar.YEAR), startDateCal.get(Calendar.MONTH), startDateCal.get(Calendar.DAY_OF_MONTH));
 
         endDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
@@ -126,7 +133,7 @@ public class AddTermActivity extends AppCompatActivity implements View.OnClickLi
                 endDate.setText(AppUtils.getFormattedDateString(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },endDateCal.get(Calendar.YEAR), endDateCal.get(Calendar.MONTH), endDateCal.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override

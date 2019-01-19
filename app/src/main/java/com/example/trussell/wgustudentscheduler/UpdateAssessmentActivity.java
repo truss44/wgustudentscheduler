@@ -9,17 +9,16 @@ import android.text.InputType;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.trussell.wgustudentscheduler.model.Assessment;
-import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -38,7 +37,13 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_assessment);
         findViewsById();
-        setDateTimeField();
+
+        try {
+            setDateTimeField();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         setData();
     }
 
@@ -162,11 +167,13 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
         alertGoal.setChecked(alertGoalBoolean);
     }
 
-    private void setDateTimeField() {
+    private void setDateTimeField() throws ParseException {
         dueDate.setOnClickListener(this);
         goalDate.setOnClickListener(this);
 
-        Calendar newCalendar = Calendar.getInstance();
+        Calendar dueDateCal = AppUtils.calendarFormat(assessment.getDueDate().toString());
+        Calendar goalDateCal = AppUtils.calendarFormat(assessment.getGoalDate().toString());
+
         dueDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -175,7 +182,7 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
                 dueDate.setText(AppUtils.getFormattedDateString(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },dueDateCal.get(Calendar.YEAR), dueDateCal.get(Calendar.MONTH), dueDateCal.get(Calendar.DAY_OF_MONTH));
 
         goalDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
@@ -185,7 +192,7 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
                 goalDate.setText(AppUtils.getFormattedDateString(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },goalDateCal.get(Calendar.YEAR), goalDateCal.get(Calendar.MONTH), goalDateCal.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override

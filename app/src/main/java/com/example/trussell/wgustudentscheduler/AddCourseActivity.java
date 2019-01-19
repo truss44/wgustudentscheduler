@@ -19,6 +19,7 @@ import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
+import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -37,7 +38,12 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
         findViewsById();
-        setDateTimeField();
+
+        try {
+            setDateTimeField();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void findViewsById() {
@@ -128,11 +134,13 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         alertEnd.setChecked(true);
     }
 
-    private void setDateTimeField() {
+    private void setDateTimeField() throws ParseException {
         startDate.setOnClickListener(this);
         endDate.setOnClickListener(this);
 
-        Calendar newCalendar = Calendar.getInstance();
+        Calendar startDateCal = AppUtils.calendarFormat(startDate.getText().toString());
+        Calendar endDateCal = AppUtils.calendarFormat(endDate.getText().toString());
+
         startDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -141,7 +149,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
                 startDate.setText(AppUtils.getFormattedDateString(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },startDateCal.get(Calendar.YEAR), startDateCal.get(Calendar.MONTH), startDateCal.get(Calendar.DAY_OF_MONTH));
 
         endDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
@@ -151,7 +159,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
                 endDate.setText(AppUtils.getFormattedDateString(newDate.getTime()));
             }
 
-        },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        },endDateCal.get(Calendar.YEAR), endDateCal.get(Calendar.MONTH), endDateCal.get(Calendar.DAY_OF_MONTH));
     }
 
     @Override
