@@ -68,11 +68,11 @@ public class AddMentorActivity extends AppCompatActivity {
             errorMsg.append(getString(R.string.valid_name) + "\n");
         }
 
-        if (AppUtils.isNullOrEmpty(phoneText)) {
+        if (AppUtils.isNullOrEmpty(phoneText) || !AppUtils.isValidPhone(phoneText)) {
             errorMsg.append(getString(R.string.valid_phone) + "\n");
         }
 
-        if (AppUtils.isNullOrEmpty(emailText)) {
+        if (AppUtils.isNullOrEmpty(emailText) || !AppUtils.isValidEmail(emailText)) {
             errorMsg.append(getString(R.string.valid_email) + "\n");
         }
 

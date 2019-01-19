@@ -55,19 +55,19 @@ public class MentorRepository implements Constants {
 
     @SuppressLint("StaticFieldLeak")
     public void deleteMentor(final int id) {
-        final LiveData<Mentor> mentor = getMentor(id);
+        final Mentor mentor = getMentor(id);
         if (mentor != null) {
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    schedulerDatabase.daoMentor().deleteMentor(mentor.getValue());
+                    schedulerDatabase.daoMentor().deleteMentor(mentor);
                     return null;
                 }
             }.execute();
         }
     }
 
-    private LiveData<Mentor> getMentor(int id) {
+    private Mentor getMentor(int id) {
         return schedulerDatabase.daoMentor().getMentor(id);
     }
 

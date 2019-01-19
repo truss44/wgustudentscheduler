@@ -63,6 +63,11 @@ public class AppUtils {
         return matcher.matches();
     }
 
+    public static boolean isValidPhone(String date) {
+        Pattern pattern = Pattern.compile("^\\d{3}-\\d{3}-\\d{4}$");
+        return pattern.matcher(date).matches();
+    }
+
     public static boolean isNullOrEmpty(String string){
         return TextUtils.isEmpty(string);
     }
