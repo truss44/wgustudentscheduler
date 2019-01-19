@@ -6,23 +6,23 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.model.Mentor;
 import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
-public class AddMentorActivity extends AppCompatActivity {
+public class UpdateMentorActivity extends AppCompatActivity {
 
     private EditText name, phone, email;
     private Button saveButton, resetButton;
 
-    private static Course course = DetailsTermActivity.getCourseData();
+    private static Mentor mentor = DetailsCourseActivity.getMentorData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_mentor);
-
         findViewsById();
+        setData();
     }
 
     private void findViewsById() {
@@ -34,23 +34,33 @@ public class AddMentorActivity extends AppCompatActivity {
         resetButton = findViewById(R.id.resetButton);
     }
 
+    private void setData() {
+        name.setText(mentor.getName());
+        phone.setText(mentor.getPhone());
+        email.setText(mentor.getEmail());
+    }
+
     public void submitData(View view) {
         String validate = isValid();
         String nameText = name.getText().toString();
         String phoneText = phone.getText().toString();
         String emailText = email.getText().toString();
 
+        mentor.setName(nameText);
+        mentor.setPhone(phoneText);
+        mentor.setEmail(emailText);
+
         if (validate.length() == 0) {
             try {
-                int courseID = course.getId();
                 MentorRepository mentorRepository = new MentorRepository(getApplicationContext());
-                mentorRepository.insertMentor(nameText, phoneText, emailText, courseID);
+                mentorRepository.updateMentor(mentor);
             } catch (Exception e) {
                 AppUtils.showLongMessage(this, e.toString());
             }
 
             AppUtils.showShortMessage(this, getString(R.string.data_saved));
             finish();
+
         } else {
             AppUtils.showLongMessage(this, validate);
         }
@@ -82,8 +92,8 @@ public class AddMentorActivity extends AppCompatActivity {
     }
 
     public void resetForm(View view) {
-        name.setText("");
-        phone.setText("");
-        email.setText("");
+        name.setText(mentor.getName());
+        phone.setText(mentor.getPhone());
+        email.setText(mentor.getEmail());
     }
 }

@@ -36,4 +36,9 @@
     <string name="alert_goal_date">Alert Goal Date</string>
     <string name="add_assessment">Add Assessment</string>
     <string name="update_assessment">Update Assessment</string>
+    <string name="update_mentor">Update Mentor</string>
+    <string name="add_note">Add Note</string>
+    <string name="update_note">Update Note</string>
+    <string name="title">Title</string>
+    <string name="note">Note</string>
 </resources>

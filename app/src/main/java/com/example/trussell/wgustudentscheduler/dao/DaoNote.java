@@ -21,9 +21,11 @@ public interface DaoNote {
     @Query("SELECT * FROM notes ORDER BY id desc")
     LiveData<List<Note>> fetchAllNotes();
 
+    @Query("SELECT * FROM notes WHERE courseID = :courseID ORDER BY id desc")
+    LiveData<List<Note>> fetchNotesByCourse(int courseID);
 
     @Query("SELECT * FROM notes WHERE id = :noteId")
-    LiveData<Note> getNote(int noteId);
+    Note getNote(int noteId);
 
 
     @Update

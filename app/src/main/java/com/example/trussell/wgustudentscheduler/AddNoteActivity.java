@@ -7,28 +7,29 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.example.trussell.wgustudentscheduler.model.Course;
-import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
+import com.example.trussell.wgustudentscheduler.model.Term;
+import com.example.trussell.wgustudentscheduler.repo.NoteRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
-public class AddMentorActivity extends AppCompatActivity {
+public class AddNoteActivity extends AppCompatActivity {
 
-    private EditText name, phone, email;
+    private EditText name, entry;
     private Button saveButton, resetButton;
 
+    private static Term term = TermActivity.getTermData();
     private static Course course = DetailsTermActivity.getCourseData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_mentor);
+        setContentView(R.layout.activity_add_note);
 
         findViewsById();
     }
 
     private void findViewsById() {
         name = findViewById(R.id.nameTextBox);
-        phone = findViewById(R.id.phoneTextBox);
-        email = findViewById(R.id.emailTextBox);
+        entry = findViewById(R.id.entryTextBox);
 
         saveButton = findViewById(R.id.saveButton);
         resetButton = findViewById(R.id.resetButton);
@@ -37,14 +38,13 @@ public class AddMentorActivity extends AppCompatActivity {
     public void submitData(View view) {
         String validate = isValid();
         String nameText = name.getText().toString();
-        String phoneText = phone.getText().toString();
-        String emailText = email.getText().toString();
+        String entryText = entry.getText().toString();
 
         if (validate.length() == 0) {
             try {
                 int courseID = course.getId();
-                MentorRepository mentorRepository = new MentorRepository(getApplicationContext());
-                mentorRepository.insertMentor(nameText, phoneText, emailText, courseID);
+                NoteRepository noteRepository = new NoteRepository(getApplicationContext());
+                noteRepository.insertNote(nameText, entryText, courseID);
             } catch (Exception e) {
                 AppUtils.showLongMessage(this, e.toString());
             }
@@ -59,19 +59,14 @@ public class AddMentorActivity extends AppCompatActivity {
     public String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
-        String phoneText = phone.getText().toString();
-        String emailText = email.getText().toString();
+        String entryText = entry.getText().toString();
 
         if (AppUtils.isNullOrEmpty(nameText)) {
             errorMsg.append(getString(R.string.valid_name) + "\n");
         }
 
-        if (AppUtils.isNullOrEmpty(phoneText) || !AppUtils.isValidPhone(phoneText)) {
-            errorMsg.append(getString(R.string.valid_phone) + "\n");
-        }
-
-        if (AppUtils.isNullOrEmpty(emailText) || !AppUtils.isValidEmail(emailText)) {
-            errorMsg.append(getString(R.string.valid_email) + "\n");
+        if (AppUtils.isNullOrEmpty(entryText)) {
+            errorMsg.append(getString(R.string.valid_note) + "\n");
         }
 
         return errorMsg.toString();
@@ -83,7 +78,6 @@ public class AddMentorActivity extends AppCompatActivity {
 
     public void resetForm(View view) {
         name.setText("");
-        phone.setText("");
-        email.setText("");
+        entry.setText("");
     }
 }

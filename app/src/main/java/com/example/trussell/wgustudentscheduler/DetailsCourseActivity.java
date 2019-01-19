@@ -24,13 +24,16 @@ import android.widget.TextView;
 
 import com.example.trussell.wgustudentscheduler.adapter.AssessmentsListAdapter;
 import com.example.trussell.wgustudentscheduler.adapter.MentorsListAdapter;
+import com.example.trussell.wgustudentscheduler.adapter.NotesListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Assessment;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Mentor;
+import com.example.trussell.wgustudentscheduler.model.Note;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
+import com.example.trussell.wgustudentscheduler.repo.NoteRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
@@ -45,6 +48,8 @@ public class DetailsCourseActivity extends AppCompatActivity {
     private static Term term = TermActivity.getTermData();
     private static Course course = DetailsTermActivity.getCourseData();
     private static Assessment assessmentData = null;
+    private static Mentor mentorData = null;
+    private static Note noteData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -210,7 +215,6 @@ public class DetailsCourseActivity extends AppCompatActivity {
         }
 
         private void updateDetailsTab(View view) {
-
             TextView label1 = view.findViewById(R.id.label1);
             TextView label2 = view.findViewById(R.id.label2);
             TextView label3 = view.findViewById(R.id.label3);
@@ -264,7 +268,6 @@ public class DetailsCourseActivity extends AppCompatActivity {
         MentorsListAdapter mentorsListAdapter = null;
         MentorRepository mentorRepository;
         private void updateMentorsTab(View view) {
-
             mentorRepository = new MentorRepository(getContext());
 
             recyclerView = view.findViewById(R.id.itemsList);
@@ -285,8 +288,27 @@ public class DetailsCourseActivity extends AppCompatActivity {
             updateMentorsList(course.getId());
         }
 
+        NotesListAdapter notesListAdapter = null;
+        NoteRepository noteRepository;
         private void updateNotesTab(View view) {
-            
+            noteRepository = new NoteRepository(getContext());
+
+            recyclerView = view.findViewById(R.id.itemsList);
+            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1 , StaggeredGridLayoutManager.VERTICAL));
+            recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), recyclerView, new RecyclerViewClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    AppUtils.showShortMessage(getContext(), "testing");
+                }
+
+                @Override
+                public void onLongClick(final View view, final int position) {
+                }
+            }));
+
+            emptyView = view.findViewById(R.id.emptyView);
+
+            updateNotesList(course.getId());
         }
 
         private void updateAssessmentsList(int id) {
@@ -318,6 +340,23 @@ public class DetailsCourseActivity extends AppCompatActivity {
                             recyclerView.setAdapter(mentorsListAdapter);
 
                         } else mentorsListAdapter.addMentors(mentors);
+                    } else updateEmptyView();
+                }
+            });
+        }
+
+        private void updateNotesList(int id) {
+            noteRepository.fetchNotesByCourse(id).observe(this, new Observer<List<Note>>() {
+                @Override
+                public void onChanged(@Nullable List<Note> notes) {
+                    if (notes != null && notes.size() > 0) {
+                        emptyView.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                        if (notesListAdapter == null) {
+                            notesListAdapter = new NotesListAdapter(notes);
+                            recyclerView.setAdapter(notesListAdapter);
+
+                        } else notesListAdapter.addNotes(notes);
                     } else updateEmptyView();
                 }
             });
@@ -393,6 +432,14 @@ public class DetailsCourseActivity extends AppCompatActivity {
 
     public static Assessment getAssessmentData () {
         return assessmentData;
+    }
+
+    public static Mentor getMentorData () {
+        return mentorData;
+    }
+
+    public static Note getNoteData () {
+        return noteData;
     }
 
     @Override

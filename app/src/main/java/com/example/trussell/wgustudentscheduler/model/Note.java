@@ -6,9 +6,6 @@ import android.arch.persistence.room.ForeignKey;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
-import android.arch.persistence.room.TypeConverters;
-
-import com.example.trussell.wgustudentscheduler.util.TimestampConverter;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -27,11 +24,13 @@ public class Note implements Serializable {
     @ColumnInfo(name = "id")
     private int id;
 
+    @ColumnInfo(name = "name")
+    private String name;
+
     @ColumnInfo(name = "entry")
     private String entry;
 
     @ColumnInfo(name = "courseID")
-    @TypeConverters({TimestampConverter.class})
     private int courseID;
 
     @Ignore
@@ -43,6 +42,14 @@ public class Note implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEntry() {

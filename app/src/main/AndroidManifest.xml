@@ -62,6 +62,21 @@
             android:label="@string/add_mentor"
             android:noHistory="true"
             android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UpdateMentorActivity"
+            android:label="@string/update_mentor"
+            android:noHistory="true"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".AddNoteActivity"
+            android:label="@string/add_note"
+            android:noHistory="true"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".UpdateNoteActivity"
+            android:label="@string/update_note"
+            android:noHistory="true"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>

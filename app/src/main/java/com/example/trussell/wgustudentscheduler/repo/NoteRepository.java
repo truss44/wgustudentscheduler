@@ -20,9 +20,9 @@ public class NoteRepository implements Constants {
                 .fallbackToDestructiveMigration().build();
     }
 
-    public void insertNote(String entry, int setCourseID) {
-
+    public void insertNote(String name, String entry, int setCourseID) {
         Note note = new Note();
+        note.setName(name);
         note.setEntry(entry);
         note.setCourseID(setCourseID);
 
@@ -53,23 +53,27 @@ public class NoteRepository implements Constants {
 
     @SuppressLint("StaticFieldLeak")
     public void deleteNote(final int id) {
-        final LiveData<Note> note = getNote(id);
+        final Note note = getNote(id);
         if (note != null) {
             new AsyncTask<Void, Void, Void>() {
                 @Override
                 protected Void doInBackground(Void... voids) {
-                    schedulerDatabase.daoNote().deleteNote(note.getValue());
+                    schedulerDatabase.daoNote().deleteNote(note);
                     return null;
                 }
             }.execute();
         }
     }
 
-    private LiveData<Note> getNote(int id) {
+    private Note getNote(int id) {
         return schedulerDatabase.daoNote().getNote(id);
     }
 
     public LiveData<List<Note>> getNotes() {
         return schedulerDatabase.daoNote().fetchAllNotes();
+    }
+
+    public LiveData<List<Note>> fetchNotesByCourse(int id) {
+        return schedulerDatabase.daoNote().fetchNotesByCourse(id);
     }
 }
