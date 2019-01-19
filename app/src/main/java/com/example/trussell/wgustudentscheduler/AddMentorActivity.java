@@ -33,7 +33,7 @@ public class AddMentorActivity extends AppCompatActivity {
     public void submitData(View view) {
         String validate = isValid();
         String nameText = name.getText().toString();
-        String phoneText = phone.getText().toString();
+        String phoneText = AppUtils.formatPhone(phone.getText().toString());
         String emailText = email.getText().toString();
 
         if (validate.length() == 0) {
@@ -55,15 +55,10 @@ public class AddMentorActivity extends AppCompatActivity {
     private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
-        String phoneText = phone.getText().toString();
         String emailText = email.getText().toString();
 
         if (AppUtils.isNullOrEmpty(nameText)) {
             errorMsg.append(getString(R.string.valid_name) + "\n");
-        }
-
-        if (AppUtils.isNullOrEmpty(phoneText) || !AppUtils.isValidPhone(phoneText)) {
-            errorMsg.append(getString(R.string.valid_phone) + "\n");
         }
 
         if (AppUtils.isNullOrEmpty(emailText) || !AppUtils.isValidEmail(emailText)) {

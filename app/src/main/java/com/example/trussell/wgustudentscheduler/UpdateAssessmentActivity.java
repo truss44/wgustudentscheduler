@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.trussell.wgustudentscheduler.model.Assessment;
+import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 
@@ -24,6 +25,7 @@ import java.util.Date;
 
 public class UpdateAssessmentActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final Course course = DetailsTermActivity.getCourseData();
     private static final Assessment assessment = DetailsCourseActivity.getAssessmentData();
     private EditText name, dueDate, goalDate;
     private CheckBox alertGoal;
@@ -174,6 +176,9 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
         Calendar dueDateCal = AppUtils.calendarFormat(assessment.getDueDate().toString());
         Calendar goalDateCal = AppUtils.calendarFormat(assessment.getGoalDate().toString());
 
+        Calendar minDate = AppUtils.calendarFormat(course.getStartDate().toString());
+        Calendar maxDate = AppUtils.calendarFormat(course.getEndDate().toString());
+
         dueDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -184,6 +189,9 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
 
         },dueDateCal.get(Calendar.YEAR), dueDateCal.get(Calendar.MONTH), dueDateCal.get(Calendar.DAY_OF_MONTH));
 
+        dueDatePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+        dueDatePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+
         goalDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -193,6 +201,9 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
             }
 
         },goalDateCal.get(Calendar.YEAR), goalDateCal.get(Calendar.MONTH), goalDateCal.get(Calendar.DAY_OF_MONTH));
+
+        goalDatePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+        goalDatePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
     }
 
     @Override

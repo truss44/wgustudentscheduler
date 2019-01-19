@@ -29,7 +29,6 @@ import com.example.trussell.wgustudentscheduler.model.Assessment;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Mentor;
 import com.example.trussell.wgustudentscheduler.model.Note;
-import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
@@ -172,16 +171,8 @@ public class DetailsCourseActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        MenuItem menuItem = menu.findItem(R.id.action_add);
-        CharSequence cs = getString(R.string.add_mentor);
-        menuItem.setTitle(cs);
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+        getMenuInflater().inflate(R.menu.secondary, menu);
         return true;
     }
 
@@ -189,10 +180,23 @@ public class DetailsCourseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.action_add:
+            case R.id.action_add_assessment: {
+                Intent addAssessmentScreenIntent = new Intent(getApplicationContext(), AddAssessmentActivity.class);
+                startActivity(addAssessmentScreenIntent);
+                return true;
+            }
+
+            case R.id.action_add_mentor: {
                 Intent addMentorScreenIntent = new Intent(getApplicationContext(), AddMentorActivity.class);
                 startActivity(addMentorScreenIntent);
                 return true;
+            }
+
+            case R.id.action_add_note: {
+                Intent addNoteScreenIntent = new Intent(getApplicationContext(), AddNoteActivity.class);
+                startActivity(addNoteScreenIntent);
+                return true;
+            }
         }
 
         return super.onOptionsItemSelected(item);
@@ -364,19 +368,6 @@ public class DetailsCourseActivity extends AppCompatActivity {
         private void updateEmptyView() {
             emptyView.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.GONE);
-        }
-
-        @Override
-        public boolean onOptionsItemSelected(MenuItem item) {
-
-            switch (item.getItemId()) {
-                case R.id.action_add:
-                    Intent courseScreenIntent = new Intent(getContext(), AddCourseActivity.class);
-                    startActivity(courseScreenIntent);
-                    return true;
-            }
-
-            return super.onOptionsItemSelected(item);
         }
 
         @Override

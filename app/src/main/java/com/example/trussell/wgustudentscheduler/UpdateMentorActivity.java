@@ -32,14 +32,14 @@ public class UpdateMentorActivity extends AppCompatActivity {
 
     private void setData() {
         name.setText(mentor.getName());
-        phone.setText(mentor.getPhone());
+        phone.setText(AppUtils.formatPhone(mentor.getPhone()));
         email.setText(mentor.getEmail());
     }
 
     public void submitData(View view) {
         String validate = isValid();
         String nameText = name.getText().toString();
-        String phoneText = phone.getText().toString();
+        String phoneText = AppUtils.formatPhone(phone.getText().toString());
         String emailText = email.getText().toString();
 
         mentor.setName(nameText);
@@ -65,15 +65,10 @@ public class UpdateMentorActivity extends AppCompatActivity {
     private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
-        String phoneText = phone.getText().toString();
         String emailText = email.getText().toString();
 
         if (AppUtils.isNullOrEmpty(nameText)) {
             errorMsg.append(getString(R.string.valid_name) + "\n");
-        }
-
-        if (AppUtils.isNullOrEmpty(phoneText) || !AppUtils.isValidPhone(phoneText)) {
-            errorMsg.append(getString(R.string.valid_phone) + "\n");
         }
 
         if (AppUtils.isNullOrEmpty(emailText) || !AppUtils.isValidEmail(emailText)) {

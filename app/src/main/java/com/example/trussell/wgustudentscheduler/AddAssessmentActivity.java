@@ -136,6 +136,9 @@ public class AddAssessmentActivity extends AppCompatActivity implements View.OnC
         Calendar dueDateCal = AppUtils.calendarFormat(dueDate.getText().toString());
         Calendar goalDateCal = AppUtils.calendarFormat(goalDate.getText().toString());
 
+        Calendar minDate = AppUtils.calendarFormat(course.getStartDate().toString());
+        Calendar maxDate = AppUtils.calendarFormat(course.getEndDate().toString());
+
         dueDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -146,6 +149,9 @@ public class AddAssessmentActivity extends AppCompatActivity implements View.OnC
 
         },dueDateCal.get(Calendar.YEAR), dueDateCal.get(Calendar.MONTH), dueDateCal.get(Calendar.DAY_OF_MONTH));
 
+        dueDatePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+        dueDatePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
+
         goalDatePickerDialog = new DatePickerDialog(this, R.style.CustomDatePickerDialog, new DatePickerDialog.OnDateSetListener() {
 
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -155,6 +161,9 @@ public class AddAssessmentActivity extends AppCompatActivity implements View.OnC
             }
 
         },goalDateCal.get(Calendar.YEAR), goalDateCal.get(Calendar.MONTH), goalDateCal.get(Calendar.DAY_OF_MONTH));
+
+        goalDatePickerDialog.getDatePicker().setMinDate(minDate.getTimeInMillis());
+        goalDatePickerDialog.getDatePicker().setMaxDate(maxDate.getTimeInMillis());
     }
 
     @Override

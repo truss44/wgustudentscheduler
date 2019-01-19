@@ -1,0 +1,21 @@
+<menu xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_add_assessment"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="100"
+        android:title="@string/add_assessment" />
+    <item
+        android:id="@+id/action_add_mentor"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="200"
+        android:title="@string/add_mentor" />
+    <item
+        android:id="@+id/action_add_note"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="300"
+        android:title="@string/add_note" />
+
+</menu>
