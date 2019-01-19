@@ -9,8 +9,8 @@ import java.util.List;
 
 public class TermDiffUtil extends DiffUtil.Callback {
 
-    private List<Term> oldTermList;
-    private List<Term> newTermList;
+    private final List<Term> oldTermList;
+    private final List<Term> newTermList;
 
     public TermDiffUtil(List<Term> oldTermList, List<Term> newTermList) {
         this.oldTermList = oldTermList;

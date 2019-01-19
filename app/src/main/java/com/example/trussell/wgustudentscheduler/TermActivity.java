@@ -44,8 +44,7 @@ public class TermActivity extends AppCompatActivity implements Constants {
         recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-                Term term = termsListAdapter.getItem(position);
-                termData = term;
+                termData = termsListAdapter.getItem(position);
                 Intent detailsScreenIntent = new Intent(getApplicationContext(), DetailsTermActivity.class);
                 startActivity(detailsScreenIntent);
             }
@@ -119,7 +118,7 @@ public class TermActivity extends AppCompatActivity implements Constants {
         }
     }
 
-    public void onShowQuitDialog() {
+    private void onShowQuitDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
 

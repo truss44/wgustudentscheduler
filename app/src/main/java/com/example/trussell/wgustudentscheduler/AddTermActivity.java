@@ -22,7 +22,6 @@ import java.util.Date;
 public class AddTermActivity extends AppCompatActivity implements View.OnClickListener {
 
     private EditText name, startDate, endDate;
-    private Button saveButton, resetButton;
 
     private DatePickerDialog startDatePickerDialog;
     private DatePickerDialog endDatePickerDialog;
@@ -43,9 +42,6 @@ public class AddTermActivity extends AppCompatActivity implements View.OnClickLi
 
         endDate = findViewById(R.id.endTextBox);
         endDate.setInputType(InputType.TYPE_NULL);
-
-        saveButton = findViewById(R.id.saveButton);
-        resetButton = findViewById(R.id.resetButton);
     }
 
     public void submitData(View view) {
@@ -71,7 +67,7 @@ public class AddTermActivity extends AppCompatActivity implements View.OnClickLi
         }
     }
 
-    public String isValid() {
+    private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
         String startDateText = startDate.getText().toString();
@@ -99,10 +95,6 @@ public class AddTermActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         return errorMsg.toString();
-    }
-
-    private boolean saveData(View view) {
-            return false;
     }
 
     public void resetForm(View view) {

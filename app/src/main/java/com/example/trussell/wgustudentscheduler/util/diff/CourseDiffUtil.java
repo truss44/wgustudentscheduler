@@ -9,8 +9,8 @@ import java.util.List;
 
 public class CourseDiffUtil extends DiffUtil.Callback {
 
-    private List<Course> oldCourseList;
-    private List<Course> newCourseList;
+    private final List<Course> oldCourseList;
+    private final List<Course> newCourseList;
 
     public CourseDiffUtil(List<Course> oldCourseList, List<Course> newCourseList) {
         this.oldCourseList = oldCourseList;

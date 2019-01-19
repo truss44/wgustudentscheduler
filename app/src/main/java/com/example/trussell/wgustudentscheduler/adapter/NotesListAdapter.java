@@ -16,7 +16,7 @@ import java.util.List;
 
 public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.CustomViewHolder> {
 
-    private List<Note> notes;
+    private final List<Note> notes;
     public NotesListAdapter(List<Note> notes) {
         this.notes = notes;
     }
@@ -53,7 +53,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Cust
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView itemName;
+        private final TextView itemName;
         CustomViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.nameTextView);

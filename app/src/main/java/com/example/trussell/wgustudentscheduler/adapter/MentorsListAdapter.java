@@ -16,7 +16,7 @@ import java.util.List;
 
 public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.CustomViewHolder> {
 
-    private List<Mentor> mentors;
+    private final List<Mentor> mentors;
     public MentorsListAdapter(List<Mentor> mentors) {
         this.mentors = mentors;
     }
@@ -53,7 +53,7 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView itemName;
+        private final TextView itemName;
         CustomViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.nameTextView);

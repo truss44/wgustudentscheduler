@@ -22,9 +22,8 @@ import java.util.Date;
 
 public class UpdateTermActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static Term term = TermActivity.getTermData();
+    private static final Term term = TermActivity.getTermData();
     private EditText name, startDate, endDate;
-    private Button saveButton, resetButton;
 
     private DatePickerDialog startDatePickerDialog;
     private DatePickerDialog endDatePickerDialog;
@@ -46,9 +45,6 @@ public class UpdateTermActivity extends AppCompatActivity implements View.OnClic
 
         endDate = findViewById(R.id.endTextBox);
         endDate.setInputType(InputType.TYPE_NULL);
-
-        saveButton = findViewById(R.id.saveButton);
-        resetButton = findViewById(R.id.resetButton);
     }
 
     private void setData() {
@@ -84,7 +80,7 @@ public class UpdateTermActivity extends AppCompatActivity implements View.OnClic
         }
     }
 
-    public String isValid() {
+    private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
         String startDateText = startDate.getText().toString();
@@ -114,19 +110,13 @@ public class UpdateTermActivity extends AppCompatActivity implements View.OnClic
         return errorMsg.toString();
     }
 
-    private boolean saveData(View view) {
-            return false;
-    }
-
     public void resetForm(View view) {
         name.setText(term.getName());
         startDate.setInputType(InputType.TYPE_CLASS_TEXT);
         startDate.setText(AppUtils.getFormattedDateString(term.getStartDate()));
-//        startDate.setInputType(InputType.TYPE_NULL);
 
         endDate.setInputType(InputType.TYPE_CLASS_TEXT);
         endDate.setText(AppUtils.getFormattedDateString(term.getEndDate()));
-//        endDate.setInputType(InputType.TYPE_NULL);
     }
 
     private void setDateTimeField() {

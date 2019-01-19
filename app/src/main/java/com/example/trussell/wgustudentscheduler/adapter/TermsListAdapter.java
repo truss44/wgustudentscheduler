@@ -16,7 +16,7 @@ import java.util.List;
 
 public class TermsListAdapter extends RecyclerView.Adapter<TermsListAdapter.CustomViewHolder> {
 
-    private List<Term> terms;
+    private final List<Term> terms;
     public TermsListAdapter(List<Term> terms) {
         this.terms = terms;
     }
@@ -53,7 +53,7 @@ public class TermsListAdapter extends RecyclerView.Adapter<TermsListAdapter.Cust
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView itemName;
+        private final TextView itemName;
         CustomViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.nameTextView);

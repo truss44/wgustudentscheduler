@@ -26,12 +26,11 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
 
     private EditText name, startDate, endDate;
     private CheckBox alertStart, alertEnd;
-    private Button saveButton, resetButton;
     private Spinner statusSpinner;
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
 
-    private static Term term = TermActivity.getTermData();
+    private static final Term term = TermActivity.getTermData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,9 +57,6 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
 
         alertStart = findViewById(R.id.alertStartCheckBox);
         alertEnd = findViewById(R.id.alertEndCheckBox);
-
-        saveButton = findViewById(R.id.saveButton);
-        resetButton = findViewById(R.id.resetButton);
     }
 
     public void submitData(View view) {
@@ -88,7 +84,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         }
     }
 
-    public String isValid() {
+    private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
         String spinnerText = statusSpinner.getSelectedItem().toString();
@@ -121,10 +117,6 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         }
 
         return errorMsg.toString();
-    }
-
-    private boolean saveData(View view) {
-            return false;
     }
 
     public void resetForm(View view) {

@@ -45,11 +45,10 @@ public class DetailsCourseActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private static Term term = TermActivity.getTermData();
-    private static Course course = DetailsTermActivity.getCourseData();
-    private static Assessment assessmentData = null;
-    private static Mentor mentorData = null;
-    private static Note noteData = null;
+    private static final Course course = DetailsTermActivity.getCourseData();
+    private static final Assessment assessmentData = null;
+    private static final Mentor mentorData = null;
+    private static final Note noteData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -191,8 +190,8 @@ public class DetailsCourseActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                Intent addmentorScreenIntent = new Intent(getApplicationContext(), AddMentorActivity.class);
-                startActivity(addmentorScreenIntent);
+                Intent addMentorScreenIntent = new Intent(getApplicationContext(), AddMentorActivity.class);
+                startActivity(addMentorScreenIntent);
                 return true;
         }
 

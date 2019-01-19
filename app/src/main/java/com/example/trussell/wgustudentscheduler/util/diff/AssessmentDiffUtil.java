@@ -9,7 +9,7 @@ import java.util.List;
 
 public class AssessmentDiffUtil extends DiffUtil.Callback {
 
-    private List<Assessment> oldAssessmentList;
+    private final List<Assessment> oldAssessmentList;
     private List<Assessment> newAssessmentList;
 
     public AssessmentDiffUtil(List<Assessment> oldAssessmentList, List<Assessment> newAssessmentList) {

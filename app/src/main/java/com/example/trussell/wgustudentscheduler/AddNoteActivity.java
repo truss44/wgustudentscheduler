@@ -14,10 +14,9 @@ import com.example.trussell.wgustudentscheduler.util.AppUtils;
 public class AddNoteActivity extends AppCompatActivity {
 
     private EditText name, entry;
-    private Button saveButton, resetButton;
 
     private static Term term = TermActivity.getTermData();
-    private static Course course = DetailsTermActivity.getCourseData();
+    private static final Course course = DetailsTermActivity.getCourseData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,9 +29,6 @@ public class AddNoteActivity extends AppCompatActivity {
     private void findViewsById() {
         name = findViewById(R.id.nameTextBox);
         entry = findViewById(R.id.entryTextBox);
-
-        saveButton = findViewById(R.id.saveButton);
-        resetButton = findViewById(R.id.resetButton);
     }
 
     public void submitData(View view) {
@@ -56,7 +52,7 @@ public class AddNoteActivity extends AppCompatActivity {
         }
     }
 
-    public String isValid() {
+    private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
         String entryText = entry.getText().toString();
@@ -70,10 +66,6 @@ public class AddNoteActivity extends AppCompatActivity {
         }
 
         return errorMsg.toString();
-    }
-
-    private boolean saveData(View view) {
-            return false;
     }
 
     public void resetForm(View view) {

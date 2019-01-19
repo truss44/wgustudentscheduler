@@ -9,8 +9,8 @@ import java.util.List;
 
 public class MentorDiffUtil extends DiffUtil.Callback {
 
-    private List<Mentor> oldMentorList;
-    private List<Mentor> newMentorList;
+    private final List<Mentor> oldMentorList;
+    private final List<Mentor> newMentorList;
 
     public MentorDiffUtil(List<Mentor> oldMentorList, List<Mentor> newMentorList) {
         this.oldMentorList = oldMentorList;

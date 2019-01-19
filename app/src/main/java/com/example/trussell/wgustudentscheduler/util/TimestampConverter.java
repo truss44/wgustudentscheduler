@@ -13,7 +13,7 @@ import java.util.TimeZone;
 public class TimestampConverter {
 
     @SuppressLint("SimpleDateFormat")
-    private static DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
+    private static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.US);
 
     @TypeConverter
     public static Date fromTimestamp(String value) {

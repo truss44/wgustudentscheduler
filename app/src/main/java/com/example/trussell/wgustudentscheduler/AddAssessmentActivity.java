@@ -26,12 +26,11 @@ public class AddAssessmentActivity extends AppCompatActivity implements View.OnC
 
     private EditText name, dueDate, goalDate;
     private CheckBox alertGoal;
-    private Button saveButton, resetButton;
     private Spinner typeSpinner;
 
     private DatePickerDialog dueDatePickerDialog, goalDatePickerDialog;
 
-    private static Course course = DetailsTermActivity.getCourseData();
+    private static final Course course = DetailsTermActivity.getCourseData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +56,6 @@ public class AddAssessmentActivity extends AppCompatActivity implements View.OnC
         goalDate.setInputType(InputType.TYPE_NULL);
 
         alertGoal = findViewById(R.id.alertGoalCheckBox);
-
-        saveButton = findViewById(R.id.saveButton);
-        resetButton = findViewById(R.id.resetButton);
     }
 
     public void submitData(View view) {
@@ -86,7 +82,7 @@ public class AddAssessmentActivity extends AppCompatActivity implements View.OnC
         }
     }
 
-    public String isValid() {
+    private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
         String spinnerText = typeSpinner.getSelectedItem().toString();
@@ -118,10 +114,6 @@ public class AddAssessmentActivity extends AppCompatActivity implements View.OnC
         }
 
         return errorMsg.toString();
-    }
-
-    private boolean saveData(View view) {
-            return false;
     }
 
     public void resetForm(View view) {

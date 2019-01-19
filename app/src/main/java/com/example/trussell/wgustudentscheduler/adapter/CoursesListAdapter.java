@@ -16,7 +16,7 @@ import java.util.List;
 
 public class CoursesListAdapter extends RecyclerView.Adapter<CoursesListAdapter.CustomViewHolder> {
 
-    private List<Course> courses;
+    private final List<Course> courses;
     public CoursesListAdapter(List<Course> courses) {
         this.courses = courses;
     }
@@ -53,7 +53,7 @@ public class CoursesListAdapter extends RecyclerView.Adapter<CoursesListAdapter.
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView itemName;
+        private final TextView itemName;
         CustomViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.nameTextView);

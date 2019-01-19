@@ -62,7 +62,7 @@
                 android:ems="10"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:gravity="top|left"
+                android:gravity="top|start"
                 android:hint="@string/note"
                 android:inputType="text" />
 

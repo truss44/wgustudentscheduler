@@ -87,7 +87,7 @@ public class Assessment implements Serializable {
         return goalDate;
     }
 
-    public void setGoalDate(Date alertStart) {
+    public void setGoalDate(Date goalDate) {
         this.goalDate = goalDate;
     }
 
@@ -103,7 +103,7 @@ public class Assessment implements Serializable {
         return courseID;
     }
 
-    public void setCourseID(int termID) {
+    public void setCourseID(int courseID) {
         this.courseID = courseID;
     }
 

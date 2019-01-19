@@ -15,7 +15,7 @@ import java.util.List;
 
 public class AssessmentRepository implements Constants {
 
-    private SchedulerDatabase schedulerDatabase;
+    private final SchedulerDatabase schedulerDatabase;
     public AssessmentRepository(Context context) {
         schedulerDatabase = Room.databaseBuilder(context, SchedulerDatabase.class, DB_NAME)
                 .fallbackToDestructiveMigration().build();

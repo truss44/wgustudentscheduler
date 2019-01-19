@@ -37,7 +37,7 @@ public class DetailsTermActivity extends AppCompatActivity {
 
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private static Term term = TermActivity.getTermData();
+    private static final Term term = TermActivity.getTermData();
     private static Course courseData = null;
 
     @Override
@@ -160,8 +160,8 @@ public class DetailsTermActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.action_add:
-                Intent addcourseScreenIntent = new Intent(getApplicationContext(), AddCourseActivity.class);
-                startActivity(addcourseScreenIntent);
+                Intent addCourseScreenIntent = new Intent(getApplicationContext(), AddCourseActivity.class);
+                startActivity(addCourseScreenIntent);
                 return true;
         }
 

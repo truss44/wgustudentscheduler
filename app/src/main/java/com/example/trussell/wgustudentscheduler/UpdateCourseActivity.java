@@ -26,12 +26,11 @@ import java.util.Date;
 public class UpdateCourseActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static Term term = TermActivity.getTermData();
-    private static Course course = DetailsTermActivity.getCourseData();
+    private static final Course course = DetailsTermActivity.getCourseData();
     private EditText name, startDate, endDate;
     private CheckBox alertStart, alertEnd;
-    private Button saveButton, resetButton;
     private Spinner statusSpinner;
-    ArrayAdapter<CharSequence> adapter;
+    private ArrayAdapter<CharSequence> adapter;
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog, goalDatePickerDialog;
 
@@ -61,9 +60,6 @@ public class UpdateCourseActivity extends AppCompatActivity implements View.OnCl
 
         alertStart = findViewById(R.id.alertStartCheckBox);
         alertEnd = findViewById(R.id.alertEndCheckBox);
-
-        saveButton = findViewById(R.id.saveButton);
-        resetButton = findViewById(R.id.resetButton);
     }
 
     private void setData() {
@@ -117,7 +113,7 @@ public class UpdateCourseActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
-    public String isValid() {
+    private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
         String spinnerText = statusSpinner.getSelectedItem().toString();
@@ -150,10 +146,6 @@ public class UpdateCourseActivity extends AppCompatActivity implements View.OnCl
         }
 
         return errorMsg.toString();
-    }
-
-    private boolean saveData(View view) {
-            return false;
     }
 
     public void resetForm(View view) {

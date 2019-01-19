@@ -13,9 +13,8 @@ import com.example.trussell.wgustudentscheduler.util.AppUtils;
 public class UpdateMentorActivity extends AppCompatActivity {
 
     private EditText name, phone, email;
-    private Button saveButton, resetButton;
 
-    private static Mentor mentor = DetailsCourseActivity.getMentorData();
+    private static final Mentor mentor = DetailsCourseActivity.getMentorData();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +28,6 @@ public class UpdateMentorActivity extends AppCompatActivity {
         name = findViewById(R.id.nameTextBox);
         phone = findViewById(R.id.phoneTextBox);
         email = findViewById(R.id.emailTextBox);
-
-        saveButton = findViewById(R.id.saveButton);
-        resetButton = findViewById(R.id.resetButton);
     }
 
     private void setData() {
@@ -66,7 +62,7 @@ public class UpdateMentorActivity extends AppCompatActivity {
         }
     }
 
-    public String isValid() {
+    private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
         String phoneText = phone.getText().toString();
@@ -85,10 +81,6 @@ public class UpdateMentorActivity extends AppCompatActivity {
         }
 
         return errorMsg.toString();
-    }
-
-    private boolean saveData(View view) {
-            return false;
     }
 
     public void resetForm(View view) {

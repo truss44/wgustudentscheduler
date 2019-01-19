@@ -9,8 +9,8 @@ import java.util.List;
 
 public class NoteDiffUtil extends DiffUtil.Callback {
 
-    private List<Note> oldNoteList;
-    private List<Note> newNoteList;
+    private final List<Note> oldNoteList;
+    private final List<Note> newNoteList;
 
     public NoteDiffUtil(List<Note> oldNoteList, List<Note> newNoteList) {
         this.oldNoteList = oldNoteList;

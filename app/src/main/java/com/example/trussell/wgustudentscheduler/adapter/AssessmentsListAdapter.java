@@ -16,7 +16,7 @@ import java.util.List;
 
 public class AssessmentsListAdapter extends RecyclerView.Adapter<AssessmentsListAdapter.CustomViewHolder> {
 
-    private List<Assessment> assessments;
+    private final List<Assessment> assessments;
     public AssessmentsListAdapter(List<Assessment> assessments) {
         this.assessments = assessments;
     }
@@ -53,7 +53,7 @@ public class AssessmentsListAdapter extends RecyclerView.Adapter<AssessmentsList
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView itemName;
+        private final TextView itemName;
         CustomViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.nameTextView);

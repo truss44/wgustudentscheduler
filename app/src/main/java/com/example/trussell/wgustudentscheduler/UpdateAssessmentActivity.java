@@ -25,13 +25,11 @@ import java.util.Date;
 
 public class UpdateAssessmentActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static Course course = DetailsTermActivity.getCourseData();
-    private static Assessment assessment = DetailsCourseActivity.getAssessmentData();
+    private static final Assessment assessment = DetailsCourseActivity.getAssessmentData();
     private EditText name, dueDate, goalDate;
     private CheckBox alertGoal;
-    private Button saveButton, resetButton;
     private Spinner typeSpinner;
-    ArrayAdapter<CharSequence> adapter;
+    private ArrayAdapter<CharSequence> adapter;
 
     private DatePickerDialog dueDatePickerDialog, goalDatePickerDialog;
 
@@ -60,9 +58,6 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
         goalDate.setInputType(InputType.TYPE_NULL);
 
         alertGoal = findViewById(R.id.alertGoalCheckBox);
-
-        saveButton = findViewById(R.id.saveButton);
-        resetButton = findViewById(R.id.resetButton);
     }
 
     private void setData() {
@@ -112,7 +107,7 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
         }
     }
 
-    public String isValid() {
+    private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
         String spinnerText = typeSpinner.getSelectedItem().toString();
@@ -144,10 +139,6 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
         }
 
         return errorMsg.toString();
-    }
-
-    private boolean saveData(View view) {
-            return false;
     }
 
     public void resetForm(View view) {
