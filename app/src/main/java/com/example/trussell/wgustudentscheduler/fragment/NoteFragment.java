@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -14,8 +16,8 @@ import android.widget.TextView;
 import com.example.trussell.wgustudentscheduler.DetailsTermActivity;
 import com.example.trussell.wgustudentscheduler.R;
 import com.example.trussell.wgustudentscheduler.adapter.NotesListAdapter;
-import com.example.trussell.wgustudentscheduler.model.Note;
 import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.model.Note;
 import com.example.trussell.wgustudentscheduler.repo.NoteRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
@@ -48,6 +50,8 @@ public class NoteFragment extends Fragment {
             public void onLongClick(final View view, final int position) {
             }
         }));
+
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
         emptyView = view.findViewById(R.id.emptyView);
 

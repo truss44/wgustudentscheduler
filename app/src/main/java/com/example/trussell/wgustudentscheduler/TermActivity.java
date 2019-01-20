@@ -8,6 +8,8 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.Menu;
@@ -54,6 +56,8 @@ public class TermActivity extends AppCompatActivity implements Constants {
             }
         }));
 
+        recyclerView.addItemDecoration(new DividerItemDecoration(this, LinearLayoutManager.VERTICAL));
+
         emptyView = findViewById(R.id.emptyView);
 
         updateTermsList();
@@ -70,8 +74,12 @@ public class TermActivity extends AppCompatActivity implements Constants {
                         termsListAdapter = new TermsListAdapter(terms);
                         recyclerView.setAdapter(termsListAdapter);
 
-                    } else termsListAdapter.addTerms(terms);
-                } else updateEmptyView();
+                    } else {
+                        termsListAdapter.addTerms(terms);
+                    }
+                } else {
+                    updateEmptyView();
+                }
             }
         });
     }

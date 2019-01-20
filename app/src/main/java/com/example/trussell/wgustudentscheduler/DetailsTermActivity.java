@@ -1,10 +1,8 @@
 package com.example.trussell.wgustudentscheduler;
 
-import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,31 +10,17 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.trussell.wgustudentscheduler.adapter.CoursesListAdapter;
-import com.example.trussell.wgustudentscheduler.fragment.AssessmentFragment;
 import com.example.trussell.wgustudentscheduler.fragment.CourseFragment;
-import com.example.trussell.wgustudentscheduler.fragment.DetailCourseFragment;
-import com.example.trussell.wgustudentscheduler.fragment.MentorFragment;
-import com.example.trussell.wgustudentscheduler.fragment.NoteFragment;
 import com.example.trussell.wgustudentscheduler.fragment.TermFragment;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
-import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
-import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
-import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.List;
 

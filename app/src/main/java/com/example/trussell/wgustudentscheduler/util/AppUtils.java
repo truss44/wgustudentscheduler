@@ -3,12 +3,10 @@ package com.example.trussell.wgustudentscheduler.util;
 import android.content.Context;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
-import android.text.format.DateFormat;
 import android.widget.Toast;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;

@@ -4,6 +4,8 @@ import android.arch.lifecycle.Observer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
@@ -48,6 +50,8 @@ public class AssessmentFragment extends Fragment {
             public void onLongClick(final View view, final int position) {
             }
         }));
+
+        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
 
         emptyView = view.findViewById(R.id.emptyView);
 

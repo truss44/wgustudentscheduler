@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-
 import com.example.trussell.wgustudentscheduler.fragment.AssessmentFragment;
 import com.example.trussell.wgustudentscheduler.fragment.DetailCourseFragment;
 import com.example.trussell.wgustudentscheduler.fragment.MentorFragment;
