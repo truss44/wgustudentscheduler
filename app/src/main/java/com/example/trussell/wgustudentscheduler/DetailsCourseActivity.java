@@ -1,10 +1,8 @@
 package com.example.trussell.wgustudentscheduler;
 
-import android.arch.lifecycle.Observer;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -12,37 +10,27 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.example.trussell.wgustudentscheduler.adapter.AssessmentsListAdapter;
-import com.example.trussell.wgustudentscheduler.adapter.MentorsListAdapter;
-import com.example.trussell.wgustudentscheduler.adapter.NotesListAdapter;
+
+import com.example.trussell.wgustudentscheduler.fragment.AssessmentFragment;
+import com.example.trussell.wgustudentscheduler.fragment.DetailCourseFragment;
+import com.example.trussell.wgustudentscheduler.fragment.MentorFragment;
+import com.example.trussell.wgustudentscheduler.fragment.NoteFragment;
 import com.example.trussell.wgustudentscheduler.model.Assessment;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Mentor;
 import com.example.trussell.wgustudentscheduler.model.Note;
-import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
-import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
-import com.example.trussell.wgustudentscheduler.repo.NoteRepository;
-import com.example.trussell.wgustudentscheduler.util.AppUtils;
-import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
-import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
 
-import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class DetailsCourseActivity extends AppCompatActivity {
 
-    private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private static final Course course = DetailsTermActivity.getCourseData();
     private static final Assessment assessmentData = null;
@@ -58,10 +46,8 @@ public class DetailsCourseActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         toolbar.setSubtitle(R.string.course_details);
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
-
         mViewPager = findViewById(R.id.container);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
+        setupViewPager(mViewPager);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
 
@@ -106,24 +92,41 @@ public class DetailsCourseActivity extends AppCompatActivity {
         });
     }
 
-    public void switchToTab(String tab){
-        int tabID = Integer.parseInt(tab);
-        switch (tabID) {
-            case 0: {
-                mViewPager.setCurrentItem(0);
-            }
+    private void setupViewPager(ViewPager viewPager) {
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(new DetailCourseFragment(), getString(R.string.details));
+        adapter.addFragment(new AssessmentFragment(), getString(R.string.assessments));
+        adapter.addFragment(new MentorFragment(), getString(R.string.mentors));
+        adapter.addFragment(new NoteFragment(), getString(R.string.notes));
+        viewPager.setAdapter(adapter);
+    }
 
-            case 1: {
-                mViewPager.setCurrentItem(1);
-            }
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
 
-            case 2: {
-                mViewPager.setCurrentItem(2);
-            }
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
 
-            case 3: {
-                mViewPager.setCurrentItem(3);
-            }
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFragment(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
         }
     }
 
@@ -170,6 +173,18 @@ public class DetailsCourseActivity extends AppCompatActivity {
         builder.create().show();
     }
 
+    public static Assessment getAssessmentData () {
+        return assessmentData;
+    }
+
+    public static Mentor getMentorData () {
+        return mentorData;
+    }
+
+    public static Note getNoteData () {
+        return noteData;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.secondary, menu);
@@ -200,236 +215,6 @@ public class DetailsCourseActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    public static class PlaceholderFragment extends Fragment {
-
-        private static final String ARG_SECTION_NUMBER = "section_number";
-
-        public PlaceholderFragment() {
-        }
-
-        public static PlaceholderFragment newInstance(int sectionNumber) {
-            PlaceholderFragment fragment = new PlaceholderFragment();
-            Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
-            fragment.setArguments(args);
-            return fragment;
-        }
-
-        private void updateDetailsTab(View view) {
-            TextView label1 = view.findViewById(R.id.label1);
-            TextView label2 = view.findViewById(R.id.label2);
-            TextView label3 = view.findViewById(R.id.label3);
-            TextView label4 = view.findViewById(R.id.label4);
-
-            TextView name = view.findViewById(R.id.nameTextView);
-            TextView status = view.findViewById(R.id.statusTextView);
-            TextView startDate = view.findViewById(R.id.startDateTextView);
-            TextView endDate = view.findViewById(R.id.endDateTextView);
-
-            String readableStart = DateFormat.getDateInstance(DateFormat.LONG).format(course.getStartDate());
-            String readableEnd = DateFormat.getDateInstance(DateFormat.LONG).format(course.getEndDate());
-
-            TextView[] textViewArray = { label1, label2, label3, label4 };
-            for (TextView tv : textViewArray) {
-                tv.append(":");
-            }
-
-            name.setText(course.getName());
-            status.setText(course.getStatus());
-            startDate.setText(readableStart);
-            endDate.setText(readableEnd);
-        }
-
-        TextView emptyView;
-        RecyclerView recyclerView;
-
-        AssessmentsListAdapter assessmentsListAdapter = null;
-        AssessmentRepository assessmentRepository;
-        private void updateAssessmentsTab(View view) {
-            assessmentRepository = new AssessmentRepository(getContext());
-
-            recyclerView = view.findViewById(R.id.itemsList);
-            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1 , StaggeredGridLayoutManager.VERTICAL));
-            recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), recyclerView, new RecyclerViewClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    AppUtils.showShortMessage(getContext(), "testing");
-                }
-
-                @Override
-                public void onLongClick(final View view, final int position) {
-                }
-            }));
-
-            emptyView = view.findViewById(R.id.emptyView);
-
-            updateAssessmentsList(course.getId());
-        }
-
-        MentorsListAdapter mentorsListAdapter = null;
-        MentorRepository mentorRepository;
-        private void updateMentorsTab(View view) {
-            mentorRepository = new MentorRepository(getContext());
-
-            recyclerView = view.findViewById(R.id.itemsList);
-            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1 , StaggeredGridLayoutManager.VERTICAL));
-            recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), recyclerView, new RecyclerViewClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    AppUtils.showShortMessage(getContext(), "testing");
-                }
-
-                @Override
-                public void onLongClick(final View view, final int position) {
-                }
-            }));
-
-            emptyView = view.findViewById(R.id.emptyView);
-
-            updateMentorsList(course.getId());
-        }
-
-        NotesListAdapter notesListAdapter = null;
-        NoteRepository noteRepository;
-        private void updateNotesTab(View view) {
-            noteRepository = new NoteRepository(getContext());
-
-            recyclerView = view.findViewById(R.id.itemsList);
-            recyclerView.setLayoutManager(new StaggeredGridLayoutManager(1 , StaggeredGridLayoutManager.VERTICAL));
-            recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), recyclerView, new RecyclerViewClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    AppUtils.showShortMessage(getContext(), "testing");
-                }
-
-                @Override
-                public void onLongClick(final View view, final int position) {
-                }
-            }));
-
-            emptyView = view.findViewById(R.id.emptyView);
-
-            updateNotesList(course.getId());
-        }
-
-        private void updateAssessmentsList(int id) {
-            assessmentRepository.fetchAssessmentsByCourse(id).observe(this, new Observer<List<Assessment>>() {
-                @Override
-                public void onChanged(@Nullable List<Assessment> assessments) {
-                    if (assessments != null && assessments.size() > 0) {
-                        emptyView.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        if (assessmentsListAdapter == null) {
-                            assessmentsListAdapter = new AssessmentsListAdapter(assessments);
-                            recyclerView.setAdapter(assessmentsListAdapter);
-
-                        } else assessmentsListAdapter.addAssessments(assessments);
-                    } else updateEmptyView();
-                }
-            });
-        }
-
-        private void updateMentorsList(int id) {
-            mentorRepository.fetchMentorsByCourse(id).observe(this, new Observer<List<Mentor>>() {
-                @Override
-                public void onChanged(@Nullable List<Mentor> mentors) {
-                    if (mentors != null && mentors.size() > 0) {
-                        emptyView.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        if (mentorsListAdapter == null) {
-                            mentorsListAdapter = new MentorsListAdapter(mentors);
-                            recyclerView.setAdapter(mentorsListAdapter);
-
-                        } else mentorsListAdapter.addMentors(mentors);
-                    } else updateEmptyView();
-                }
-            });
-        }
-
-        private void updateNotesList(int id) {
-            noteRepository.fetchNotesByCourse(id).observe(this, new Observer<List<Note>>() {
-                @Override
-                public void onChanged(@Nullable List<Note> notes) {
-                    if (notes != null && notes.size() > 0) {
-                        emptyView.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                        if (notesListAdapter == null) {
-                            notesListAdapter = new NotesListAdapter(notes);
-                            recyclerView.setAdapter(notesListAdapter);
-
-                        } else notesListAdapter.addNotes(notes);
-                    } else updateEmptyView();
-                }
-            });
-        }
-
-        private void updateEmptyView() {
-            emptyView.setVisibility(View.VISIBLE);
-            recyclerView.setVisibility(View.GONE);
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_details_course, container, false);
-            switch (getArguments().getInt(ARG_SECTION_NUMBER)) {
-                case 1: {
-                    rootView = inflater.inflate(R.layout.details_tab_course, container, false);
-                    updateDetailsTab(rootView);
-                    break;
-                }
-
-                case 2: {
-                    rootView = inflater.inflate(R.layout.assessments_tab_course, container, false);
-                    updateAssessmentsTab(rootView);
-                    break;
-                }
-
-                case 3: {
-                    rootView = inflater.inflate(R.layout.mentors_tab_course, container, false);
-                    updateMentorsTab(rootView);
-                    break;
-                }
-
-                case 4: {
-                    rootView = inflater.inflate(R.layout.notes_tab_course, container, false);
-                    updateNotesTab(rootView);
-                    break;
-                }
-            }
-            return rootView;
-        }
-    }
-
-    public class SectionsPagerAdapter extends FragmentPagerAdapter {
-
-        public SectionsPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return PlaceholderFragment.newInstance(position + 1);
-        }
-
-        @Override
-        public int getCount() {
-            return 4;
-        }
-    }
-
-    public static Assessment getAssessmentData () {
-        return assessmentData;
-    }
-
-    public static Mentor getMentorData () {
-        return mentorData;
-    }
-
-    public static Note getNoteData () {
-        return noteData;
     }
 
     @Override
