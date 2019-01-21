@@ -27,6 +27,8 @@ public interface DaoCourse {
     @Query("SELECT * FROM courses WHERE id = :courseID")
     Course getCourse(int courseID);
 
+    @Query("SELECT count(id) AS total FROM courses WHERE termID = :termID")
+    int getTermCourseCount(int termID);
 
     @Update
     void updateCourse(Course course);

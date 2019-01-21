@@ -19,7 +19,9 @@ import com.example.trussell.wgustudentscheduler.fragment.CourseFragment;
 import com.example.trussell.wgustudentscheduler.fragment.TermFragment;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
+import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
+import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.util.ArrayList;
@@ -114,6 +116,10 @@ public class DetailsTermActivity extends AppCompatActivity {
         startActivity(detailsScreenIntent);
     }
 
+    static class WrapperTerm {
+        static int courseCount = 0;
+    }
+
     public void removeTerm(View view) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setCancelable(false);
@@ -122,23 +128,44 @@ public class DetailsTermActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-                        Thread thread = new Thread(new Runnable(){
+
+                        Thread threadTerm = new Thread(new Runnable() {
                             public void run() {
-                                TermRepository termRepository = new TermRepository(DetailsTermActivity.this);
-                                termRepository.deleteTerm(term.getId());
+                                CourseRepository courseRepository = new CourseRepository(DetailsTermActivity.this);
+                                WrapperTerm.courseCount = courseRepository.getTermCourseCount(term.getId());
                             }
                         });
 
-                        thread.start();
+                        threadTerm.start();
 
                         try {
-                            thread.join(2000);
+                            threadTerm.join(2000);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
 
-                        Intent termsScreenIntent = new Intent(getApplicationContext(), TermActivity.class);
-                        startActivity(termsScreenIntent);
+                        if (WrapperTerm.courseCount == 0) {
+                            Thread thread = new Thread(new Runnable() {
+                                public void run() {
+                                    TermRepository termRepository = new TermRepository(DetailsTermActivity.this);
+                                    termRepository.deleteTerm(term.getId());
+                                }
+                            });
+
+                            thread.start();
+
+                            try {
+                                thread.join(2000);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+
+                            Intent termsScreenIntent = new Intent(getApplicationContext(), TermActivity.class);
+                            startActivity(termsScreenIntent);
+                        } else {
+                            AppUtils.showLongMessage(DetailsTermActivity.this,
+                                    getString(R.string.cannot_delete_term_course_attached));
+                        }
                     }
                 });
 

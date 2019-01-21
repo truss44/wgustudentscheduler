@@ -76,6 +76,8 @@ public class CourseRepository implements Constants {
         return schedulerDatabase.daoCourse().getCourse(id);
     }
 
+    public int getTermCourseCount(int id) { return schedulerDatabase.daoCourse().getTermCourseCount(id); }
+
     public LiveData<List<Course>> getCourses() {
         return schedulerDatabase.daoCourse().fetchAllCourses();
     }
