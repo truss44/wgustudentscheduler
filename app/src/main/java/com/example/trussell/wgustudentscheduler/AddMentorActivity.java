@@ -8,12 +8,13 @@ import android.widget.EditText;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.repo.MentorRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 public class AddMentorActivity extends AppCompatActivity {
 
     private EditText name, phone, email;
 
-    private static final Course course = DetailsTermActivity.getCourseData();
+    private Course course = CurrentData.courseData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

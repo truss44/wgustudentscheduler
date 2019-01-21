@@ -20,6 +20,7 @@ import com.example.trussell.wgustudentscheduler.fragment.TermFragment;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +28,7 @@ import java.util.List;
 public class DetailsTermActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
-    private static final Term term = TermActivity.getTermData();
-    private static Course courseData = null;
+    private Term term = CurrentData.termData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,14 +150,6 @@ public class DetailsTermActivity extends AppCompatActivity {
                 });
 
         builder.create().show();
-    }
-
-    public static void setCourseData (Course newCourseData) {
-        courseData = newCourseData;
-    }
-
-    public static Course getCourseData () {
-        return courseData;
     }
 
     @Override

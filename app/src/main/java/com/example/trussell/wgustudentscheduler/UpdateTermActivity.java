@@ -15,6 +15,7 @@ import android.widget.EditText;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -22,7 +23,7 @@ import java.util.Date;
 
 public class UpdateTermActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static final Term term = TermActivity.getTermData();
+    private Term term = CurrentData.termData;
     private EditText name, startDate, endDate;
 
     private DatePickerDialog startDatePickerDialog;

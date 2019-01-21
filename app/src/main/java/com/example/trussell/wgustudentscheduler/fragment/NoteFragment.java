@@ -1,6 +1,7 @@
 package com.example.trussell.wgustudentscheduler.fragment;
 
 import android.arch.lifecycle.Observer;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,13 +14,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.trussell.wgustudentscheduler.DetailsMentorActivity;
+import com.example.trussell.wgustudentscheduler.DetailsNoteActivity;
 import com.example.trussell.wgustudentscheduler.DetailsTermActivity;
 import com.example.trussell.wgustudentscheduler.R;
 import com.example.trussell.wgustudentscheduler.adapter.NotesListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.model.Mentor;
 import com.example.trussell.wgustudentscheduler.model.Note;
 import com.example.trussell.wgustudentscheduler.repo.NoteRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
 
@@ -31,7 +36,7 @@ public class NoteFragment extends Fragment {
     NotesListAdapter notesListAdapter = null;
     NoteRepository noteRepository;
     TextView emptyView;
-    private static final Course course = DetailsTermActivity.getCourseData();
+    private Course course = CurrentData.courseData;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -43,7 +48,10 @@ public class NoteFragment extends Fragment {
         recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getContext(), recyclerView, new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-                AppUtils.showShortMessage(getContext(), "testing");
+                Note note = notesListAdapter.getItem(position);
+                Intent detailsScreenIntent = new Intent(getContext(), DetailsNoteActivity.class);
+                CurrentData.noteData = note;
+                startActivity(detailsScreenIntent);
             }
 
             @Override

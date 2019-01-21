@@ -24,6 +24,8 @@ import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Mentor;
 import com.example.trussell.wgustudentscheduler.model.Note;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
+import com.example.trussell.wgustudentscheduler.util.AppUtils;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +33,7 @@ import java.util.List;
 public class DetailsCourseActivity extends AppCompatActivity {
 
     private ViewPager mViewPager;
-    private static final Course course = DetailsTermActivity.getCourseData();
-    private static final Assessment assessmentData = null;
-    private static final Mentor mentorData = null;
-    private static final Note noteData = null;
+    private Course course = CurrentData.courseData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +48,6 @@ public class DetailsCourseActivity extends AppCompatActivity {
         setupViewPager(mViewPager);
 
         TabLayout tabLayout = findViewById(R.id.tabs);
-
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -170,18 +168,6 @@ public class DetailsCourseActivity extends AppCompatActivity {
                 });
 
         builder.create().show();
-    }
-
-    public static Assessment getAssessmentData () {
-        return assessmentData;
-    }
-
-    public static Mentor getMentorData () {
-        return mentorData;
-    }
-
-    public static Note getNoteData () {
-        return noteData;
     }
 
     @Override

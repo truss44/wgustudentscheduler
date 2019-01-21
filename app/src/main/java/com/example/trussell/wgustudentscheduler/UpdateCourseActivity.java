@@ -18,6 +18,7 @@ import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -25,8 +26,8 @@ import java.util.Date;
 
 public class UpdateCourseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static Term term = TermActivity.getTermData();
-    private static final Course course = DetailsTermActivity.getCourseData();
+    private Term term = CurrentData.termData;
+    private Course course = CurrentData.courseData;
     private EditText name, startDate, endDate;
     private CheckBox alertStart, alertEnd;
     private Spinner statusSpinner;

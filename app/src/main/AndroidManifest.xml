@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.trussell.wgustudentscheduler">
 
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <application
         android:allowBackup="true"
         android:fullBackupContent="true"
@@ -58,6 +60,10 @@
             android:noHistory="true"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".DetailsAssessmentActivity"
+            android:label="@string/assessment_details"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".AddMentorActivity"
             android:label="@string/add_mentor"
             android:noHistory="true"
@@ -68,6 +74,10 @@
             android:noHistory="true"
             android:theme="@style/AppTheme" />
         <activity
+            android:name=".DetailsMentorActivity"
+            android:label="@string/mentor_details"
+            android:theme="@style/AppTheme" />
+        <activity
             android:name=".AddNoteActivity"
             android:label="@string/add_note"
             android:noHistory="true"
@@ -76,6 +86,10 @@
             android:name=".UpdateNoteActivity"
             android:label="@string/update_note"
             android:noHistory="true"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".DetailsNoteActivity"
+            android:label="@string/note_details"
             android:theme="@style/AppTheme" />
     </application>
 

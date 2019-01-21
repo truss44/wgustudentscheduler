@@ -9,13 +9,14 @@ import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.NoteRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 public class AddNoteActivity extends AppCompatActivity {
 
     private EditText name, entry;
 
-    private static Term term = TermActivity.getTermData();
-    private static final Course course = DetailsTermActivity.getCourseData();
+    private Term term = CurrentData.termData;
+    private Course course = CurrentData.courseData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

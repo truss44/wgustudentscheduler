@@ -10,12 +10,13 @@ import android.widget.TextView;
 import com.example.trussell.wgustudentscheduler.R;
 import com.example.trussell.wgustudentscheduler.TermActivity;
 import com.example.trussell.wgustudentscheduler.model.Term;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.text.DateFormat;
 
 public class TermFragment extends Fragment {
 
-    private static final Term term = TermActivity.getTermData();
+    private Term term = CurrentData.termData;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

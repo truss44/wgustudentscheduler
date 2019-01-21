@@ -3,4 +3,6 @@
     <string name="quit">Are You Sure You Want To Quit?</string>
     <string name="remove_term_alert">Are you sure you want to remove this term?</string>
     <string name="remove_course_alert">Are you sure you want to remove this course?</string>
+    <string name="remove_mentor_alert">Are you sure you want to remove this mentor?</string>
+    <string name="remove_assessment_alert">Are you sure you want to remove this assessment?</string>
 </resources>

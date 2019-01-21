@@ -8,12 +8,13 @@ import android.widget.EditText;
 import com.example.trussell.wgustudentscheduler.model.Note;
 import com.example.trussell.wgustudentscheduler.repo.NoteRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 public class UpdateNoteActivity extends AppCompatActivity {
 
     private EditText name, entry;
 
-    private static final Note note = DetailsCourseActivity.getNoteData();
+    private Note note = CurrentData.noteData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

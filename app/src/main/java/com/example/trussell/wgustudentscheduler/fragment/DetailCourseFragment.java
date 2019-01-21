@@ -10,12 +10,13 @@ import android.widget.TextView;
 import com.example.trussell.wgustudentscheduler.DetailsTermActivity;
 import com.example.trussell.wgustudentscheduler.R;
 import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.text.DateFormat;
 
 public class DetailCourseFragment extends Fragment {
 
-    private static final Course course = DetailsTermActivity.getCourseData();
+    private Course course = CurrentData.courseData;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

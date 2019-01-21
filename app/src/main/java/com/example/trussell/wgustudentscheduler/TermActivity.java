@@ -21,6 +21,7 @@ import com.example.trussell.wgustudentscheduler.adapter.TermsListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;
 import com.example.trussell.wgustudentscheduler.util.Constants;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
 
@@ -32,7 +33,6 @@ public class TermActivity extends AppCompatActivity implements Constants {
     private RecyclerView recyclerView;
     private TermsListAdapter termsListAdapter;
     private TermRepository termRepository;
-    private static Term termData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class TermActivity extends AppCompatActivity implements Constants {
         recyclerView.addOnItemTouchListener(new RecyclerViewTouchListener(getApplicationContext(), recyclerView, new RecyclerViewClickListener() {
             @Override
             public void onClick(View view, int position) {
-                termData = termsListAdapter.getItem(position);
+                CurrentData.termData = termsListAdapter.getItem(position);
                 Intent detailsScreenIntent = new Intent(getApplicationContext(), DetailsTermActivity.class);
                 startActivity(detailsScreenIntent);
             }
@@ -149,9 +149,5 @@ public class TermActivity extends AppCompatActivity implements Constants {
                 });
 
         builder.create().show();
-    }
-
-    public static Term getTermData () {
-        return termData;
     }
 }

@@ -22,6 +22,8 @@ import com.example.trussell.wgustudentscheduler.adapter.CoursesListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
+import com.example.trussell.wgustudentscheduler.util.AppUtils;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
 
@@ -33,7 +35,7 @@ public class CourseFragment extends Fragment {
     CoursesListAdapter coursesListAdapter = null;
     CourseRepository courseRepository;
     TextView emptyView;
-    private static final Term term = TermActivity.getTermData();
+    private Term term = CurrentData.termData;
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
@@ -47,7 +49,7 @@ public class CourseFragment extends Fragment {
             public void onClick(View view, int position) {
                 Course course = coursesListAdapter.getItem(position);
                 Intent detailsScreenIntent = new Intent(getContext(), DetailsCourseActivity.class);
-                DetailsTermActivity.setCourseData(course);
+                CurrentData.courseData = course;
                 startActivity(detailsScreenIntent);
             }
 

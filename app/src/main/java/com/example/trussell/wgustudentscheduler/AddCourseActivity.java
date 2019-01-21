@@ -17,6 +17,7 @@ import android.widget.Spinner;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
+import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.text.ParseException;
 import java.util.Calendar;
@@ -30,7 +31,7 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
 
     private DatePickerDialog startDatePickerDialog, endDatePickerDialog;
 
-    private static final Term term = TermActivity.getTermData();
+    private Term term = CurrentData.termData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

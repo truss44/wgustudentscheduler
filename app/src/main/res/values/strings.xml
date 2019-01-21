@@ -42,4 +42,11 @@
     <string name="title">Title</string>
     <string name="note">Note</string>
     <string name="menu_tail">Menu Tail</string>
+    <string name="remove_mentor">Remove Mentor</string>
+    <string name="remove_assessment">Remove Assessment</string>
+    <string name="remove_note">Remove Note</string>
+    <string name="remove_note_alert">Are you sure you want to remove this note?</string>
+    <string name="note_details">Note Details</string>
+    <string name="assessment_details">Assessment Details</string>
+    <string name="mentor_details">Mentor Details</string>
 </resources>
