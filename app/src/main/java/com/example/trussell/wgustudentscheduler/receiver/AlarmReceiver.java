@@ -7,6 +7,8 @@ import android.app.TaskStackBuilder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 
@@ -32,7 +34,7 @@ public class AlarmReceiver extends BroadcastReceiver {
 
         PendingIntent resultPendingIntent =
                 stackBuilder.getPendingIntent(
-                        1,
+                        mNotificationId,
                         PendingIntent.FLAG_UPDATE_CURRENT
                 );
 
@@ -40,6 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 new NotificationCompat.Builder(context, CHANNEL_ID);
 
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        mBuilder.setLargeIcon(BitmapFactory.decodeResource(Resources.getSystem(), R.mipmap.ic_launcher));
         mBuilder.setContentTitle(mNotificationTitle);
         mBuilder.setContentText(mNotificationContent);
         mBuilder.setContentIntent(resultPendingIntent);
