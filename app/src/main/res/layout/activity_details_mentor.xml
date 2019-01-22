@@ -61,16 +61,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/phoneImageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.6"
-            android:clickable="true"
-            android:tint="@android:color/holo_green_dark"
-            android:visibility="gone"
-            app:srcCompat="@android:drawable/stat_sys_phone_call" />
     </LinearLayout>
 
     <LinearLayout
@@ -98,16 +88,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="18sp" />
-
-        <ImageView
-            android:id="@+id/emailImageView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.6"
-            android:clickable="true"
-            android:tint="@android:color/holo_green_dark"
-            android:visibility="invisible"
-            app:srcCompat="@android:drawable/ic_dialog_email" />
     </LinearLayout>
 
     <LinearLayout

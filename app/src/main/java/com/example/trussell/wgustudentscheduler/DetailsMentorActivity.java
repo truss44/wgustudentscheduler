@@ -4,13 +4,14 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.trussell.wgustudentscheduler.model.Mentor;
@@ -21,6 +22,7 @@ import com.example.trussell.wgustudentscheduler.util.CurrentData;
 public class DetailsMentorActivity extends AppCompatActivity {
 
     private Mentor mentor = CurrentData.mentorData;
+    TextView phone;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +34,8 @@ public class DetailsMentorActivity extends AppCompatActivity {
         TextView label3 = findViewById(R.id.label3);
 
         TextView name = findViewById(R.id.nameTextView);
-        final TextView phone = findViewById(R.id.phoneTextView);
-        ImageView phoneImage = findViewById(R.id.phoneImageView);
+        phone = findViewById(R.id.phoneTextView);
         TextView email = findViewById(R.id.emailTextView);
-        ImageView emailImage = findViewById(R.id.emailImageView);
 
         TextView[] textViewArray = { label1, label2, label3 };
         for (TextView tv : textViewArray) {
@@ -46,40 +46,71 @@ public class DetailsMentorActivity extends AppCompatActivity {
         phone.setText(mentor.getPhone());
         email.setText(mentor.getEmail());
 
-        if (ContextCompat.checkSelfPermission(getBaseContext(), Manifest.permission.CALL_PHONE)
-                == PackageManager.PERMISSION_GRANTED) {
+        String callPermission = Manifest.permission.CALL_PHONE;
+        int hasPermission = ContextCompat.checkSelfPermission(getBaseContext(), callPermission);
+        String[] permissions = new String[] { callPermission };
 
-            final String number = phone.getText().toString().replaceAll("[^\\d.]", "");
+        if (ContextCompat.checkSelfPermission(getBaseContext(), callPermission)
+                != PackageManager.PERMISSION_GRANTED) {
 
-            if (!AppUtils.isNullOrEmpty(number)) {
-                phoneImage.setVisibility(View.VISIBLE);
+            ActivityCompat.requestPermissions(this, permissions, 1);
 
-                phoneImage.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View arg0) {
-                        Intent intent = new Intent(Intent.ACTION_CALL);
-                        intent.setData(Uri.parse("tel:" + number));
-                        startActivity(intent);
-                    }
-                });
-            } else {
-                phoneImage.setVisibility(View.GONE);
-            }
+        } else {
+            setCallOptions();
         }
 
         final String emailAddr = email.getText().toString();
+        int originalColor = phone.getCurrentTextColor();
 
         if (!AppUtils.isNullOrEmpty(emailAddr)) {
-            emailImage.setVisibility(View.VISIBLE);
 
-            emailImage.setOnClickListener(new View.OnClickListener() {
+            email.setTextColor(Color.parseColor("#0000FF"));
+            email.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View arg0) {
                     Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts(
-                            "mailto",emailAddr, null));
+                            "mailto", emailAddr, null));
                     startActivity(Intent.createChooser(intent, getString(R.string.choose_email_client)));
                 }
             });
         } else {
-            emailImage.setVisibility(View.GONE);
+            email.setTextColor(originalColor);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode,
+            String permissions[],
+            int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+                int originalColor = phone.getCurrentTextColor();
+
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    setCallOptions();
+                } else {
+                    phone.setTextColor(originalColor);
+                }
+            }
+        }
+    }
+
+    public void setCallOptions() {
+        int originalColor = phone.getCurrentTextColor();
+        final String number = phone.getText().toString().replaceAll("[^\\d.]", "");
+
+        if (!AppUtils.isNullOrEmpty(number)) {
+            phone.setTextColor(Color.parseColor("#0000FF"));
+            phone.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View arg0) {
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    intent.setData(Uri.parse("tel:" + number));
+                    startActivity(intent);
+                }
+            });
+        } else {
+            phone.setTextColor(originalColor);
         }
     }
 
