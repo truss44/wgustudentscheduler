@@ -1,7 +1,10 @@
 package com.example.trussell.wgustudentscheduler;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +19,13 @@ import android.widget.Spinner;
 
 import com.example.trussell.wgustudentscheduler.model.Assessment;
 import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.receiver.AlarmReceiver;
 import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -74,12 +79,8 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
         goalDate.setText(AppUtils.getFormattedDateString(assessment.getGoalDate()));
 
         String typeValue = typeSpinner.getSelectedItem().toString();
-        if (typeValue != null) {
-            int spinnerPosition = adapter.getPosition(assessment.getType());
-            typeSpinner.setSelection(spinnerPosition);
-        } else {
-            typeSpinner.setSelection(0);
-        }
+        int spinnerPosition = adapter.getPosition(assessment.getType());
+        typeSpinner.setSelection(spinnerPosition);
 
         boolean alertGoalBoolean = AppUtils.integerToBoolean(assessment.getAlertGoal());
         alertGoal.setChecked(alertGoalBoolean);
@@ -92,14 +93,50 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
         Date dueDateText = AppUtils.formatStringToDate(dueDate.getText().toString());
         Date goalDateText = AppUtils.formatStringToDate(goalDate.getText().toString());
         int alertGoalInt = AppUtils.booleanToInteger(alertGoal.isChecked());
-
-        assessment.setName(nameText);
-        assessment.setType(spinnerText);
-        assessment.setDueDate(dueDateText);
-        assessment.setGoalDate(goalDateText);
-        assessment.setAlertGoal(alertGoalInt);
+        String goalIdNotificationText = assessment.getAlertGoalID();
 
         if (validate.length() == 0) {
+
+            if (alertGoal.isChecked()) {
+                String endNotificationTitle = "Assessment Reminder";
+                String endNotificationText = "Assessment '" + nameText + "' is scheduled for today.";
+
+                Intent goalNotificationIntent = new Intent(this.getApplicationContext(), AlarmReceiver.class);
+                goalNotificationIntent.putExtra("mNotificationTitle", endNotificationTitle);
+                goalNotificationIntent.putExtra("mNotificationContent", endNotificationText);
+                goalNotificationIntent.putExtra("mNotificationId", goalIdNotificationText);
+
+                int requestCode = Integer.parseInt(goalIdNotificationText);
+
+                PendingIntent goalPendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(),
+                        requestCode, goalNotificationIntent, 0);
+
+                AlarmManager goalAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                    Date goalDate = dateFormat.parse(AppUtils.getFormattedDateString(goalDateText));
+                    Calendar goalCal = Calendar.getInstance();
+                    goalCal.setTime(goalDate);
+                    goalAlarmManager.set(AlarmManager.RTC_WAKEUP, goalCal.getTimeInMillis(), goalPendingIntent);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Intent intent = getIntent();
+                int requestCode = Integer.parseInt(goalIdNotificationText);
+                PendingIntent.getBroadcast(this.getApplicationContext(), requestCode, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT).cancel();
+            }
+
+            assessment.setName(nameText);
+            assessment.setType(spinnerText);
+            assessment.setDueDate(dueDateText);
+            assessment.setGoalDate(goalDateText);
+            assessment.setAlertGoal(alertGoalInt);
+            assessment.setAlertGoalID(goalIdNotificationText);
+
             try {
                 AssessmentRepository assessmentRepository = new AssessmentRepository(getApplicationContext());
                 assessmentRepository.updateAssessment(assessment);
@@ -153,12 +190,8 @@ public class UpdateAssessmentActivity extends AppCompatActivity implements View.
         name.setText(assessment.getName());
 
         String typeValue = typeSpinner.getSelectedItem().toString();
-        if (typeValue != null) {
-            int spinnerPosition = adapter.getPosition(assessment.getType());
-            typeSpinner.setSelection(spinnerPosition);
-        } else {
-            typeSpinner.setSelection(0);
-        }
+        int spinnerPosition = adapter.getPosition(assessment.getType());
+        typeSpinner.setSelection(spinnerPosition);
 
         dueDate.setInputType(InputType.TYPE_CLASS_TEXT);
         dueDate.setText(AppUtils.getFormattedDateString(assessment.getDueDate()));

@@ -24,7 +24,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Cust
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_with_subtext, parent, false);
         return new CustomViewHolder(view);
     }
 
@@ -32,6 +32,7 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Cust
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         Note note = getItem(position);
         holder.itemName.setText(note.getName());
+        holder.itemSub.setText(note.getEntry());
     }
 
     @Override
@@ -53,10 +54,11 @@ public class NotesListAdapter extends RecyclerView.Adapter<NotesListAdapter.Cust
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView itemName;
+        private final TextView itemName, itemSub;
         CustomViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.nameTextView);
+            itemSub = itemView.findViewById(R.id.subTextView);
         }
     }
 }

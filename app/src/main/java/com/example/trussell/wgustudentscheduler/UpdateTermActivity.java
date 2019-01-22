@@ -66,11 +66,12 @@ public class UpdateTermActivity extends AppCompatActivity implements View.OnClic
         Date startDateText = AppUtils.formatStringToDate(startDate.getText().toString());
         Date endDateText = AppUtils.formatStringToDate(endDate.getText().toString());
 
-        term.setName(nameText);
-        term.setStartDate(startDateText);
-        term.setEndDate(endDateText);
-
         if (validate.length() == 0) {
+
+            term.setName(nameText);
+            term.setStartDate(startDateText);
+            term.setEndDate(endDateText);
+
             try {
                 TermRepository termRepository = new TermRepository(getApplicationContext());
                 termRepository.updateTerm(term);

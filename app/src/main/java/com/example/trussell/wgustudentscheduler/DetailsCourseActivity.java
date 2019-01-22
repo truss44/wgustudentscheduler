@@ -1,5 +1,6 @@
 package com.example.trussell.wgustudentscheduler;
 
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,12 +20,9 @@ import com.example.trussell.wgustudentscheduler.fragment.AssessmentFragment;
 import com.example.trussell.wgustudentscheduler.fragment.DetailCourseFragment;
 import com.example.trussell.wgustudentscheduler.fragment.MentorFragment;
 import com.example.trussell.wgustudentscheduler.fragment.NoteFragment;
-import com.example.trussell.wgustudentscheduler.model.Assessment;
 import com.example.trussell.wgustudentscheduler.model.Course;
-import com.example.trussell.wgustudentscheduler.model.Mentor;
-import com.example.trussell.wgustudentscheduler.model.Note;
+import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
-import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.util.ArrayList;
@@ -140,6 +138,41 @@ public class DetailsCourseActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+
+                        Intent intent = getIntent();
+                        int requestCodeStart = Integer.parseInt(course.getAlertStartID());
+                        PendingIntent.getBroadcast(getApplicationContext(), requestCodeStart, intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT).cancel();
+
+                        int requestCodeEnd = Integer.parseInt(course.getAlertEndID());
+                        PendingIntent.getBroadcast(getApplicationContext(), requestCodeEnd, intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT).cancel();
+
+
+                        Thread threadAssessments = new Thread(new Runnable(){
+                            public void run() {
+                                AssessmentRepository assessmentRepository = new AssessmentRepository(getBaseContext());
+
+                                ArrayList <String> assessmentRequestIDs =
+                                        (ArrayList <String>) assessmentRepository.getAssessmentsInCourse(course.getId());
+
+                                for (String assessmentRequestID : assessmentRequestIDs) {
+                                    Intent intent = getIntent();
+                                    int requestCodeGoals = Integer.parseInt(assessmentRequestID);
+                                    PendingIntent.getBroadcast(getApplicationContext(), requestCodeGoals, intent,
+                                            PendingIntent.FLAG_UPDATE_CURRENT).cancel();
+                                }
+                            }
+                        });
+
+                        threadAssessments.start();
+
+                        try {
+                            threadAssessments.join(4000);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+
 
                         Thread thread = new Thread(new Runnable(){
                             public void run() {

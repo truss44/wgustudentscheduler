@@ -27,6 +27,8 @@ public interface DaoAssessment {
     @Query("SELECT * FROM assessments WHERE id = :assessmentID")
     Assessment getAssessment(int assessmentID);
 
+    @Query("SELECT alertGoalID FROM assessments WHERE courseID = :courseID ORDER BY id desc")
+    List<String> getAssessmentsInCourse(int courseID);
 
     @Update
     void updateAssessment(Assessment assessment);

@@ -39,10 +39,11 @@ public class UpdateNoteActivity extends AppCompatActivity {
         String nameText = name.getText().toString();
         String entryText = entry.getText().toString();
 
-        note.setName(nameText);
-        note.setEntry(entryText);
-
         if (validate.length() == 0) {
+
+            note.setName(nameText);
+            note.setEntry(entryText);
+
             try {
                 NoteRepository noteRepository = new NoteRepository(getApplicationContext());
                 noteRepository.updateNote(note);

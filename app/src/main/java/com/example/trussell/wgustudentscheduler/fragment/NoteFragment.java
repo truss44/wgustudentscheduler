@@ -14,21 +14,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.trussell.wgustudentscheduler.DetailsMentorActivity;
 import com.example.trussell.wgustudentscheduler.DetailsNoteActivity;
-import com.example.trussell.wgustudentscheduler.DetailsTermActivity;
 import com.example.trussell.wgustudentscheduler.R;
 import com.example.trussell.wgustudentscheduler.adapter.NotesListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Course;
-import com.example.trussell.wgustudentscheduler.model.Mentor;
 import com.example.trussell.wgustudentscheduler.model.Note;
 import com.example.trussell.wgustudentscheduler.repo.NoteRepository;
-import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.CurrentData;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
 
 import java.util.List;
+import java.util.Objects;
 
 public class NoteFragment extends Fragment {
 
@@ -59,7 +56,7 @@ public class NoteFragment extends Fragment {
             }
         }));
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), LinearLayoutManager.VERTICAL));
 
         emptyView = view.findViewById(R.id.emptyView);
 

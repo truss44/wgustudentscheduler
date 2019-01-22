@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.trussell.wgustudentscheduler.R;
-import com.example.trussell.wgustudentscheduler.TermActivity;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.util.CurrentData;
 

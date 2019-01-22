@@ -22,7 +22,8 @@ public class CourseRepository implements Constants {
     }
 
     public void insertCourse(String name, String status, Date startDate, Date endDate,
-                             int alertStart, int alertEnd, int termID) {
+                             int alertStart, int alertEnd, int termID, String alertStartID,
+                             String alertEndID) {
 
         Course course = new Course();
         course.setName(name);
@@ -32,6 +33,8 @@ public class CourseRepository implements Constants {
         course.setAlertStart(alertStart);
         course.setAlertEnd(alertEnd);
         course.setTermID(termID);
+        course.setAlertStartID(alertStartID);
+        course.setAlertEndID(alertEndID);
 
         insertCourse(course);
     }

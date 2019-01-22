@@ -1,7 +1,10 @@
 package com.example.trussell.wgustudentscheduler;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,13 +18,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.trussell.wgustudentscheduler.model.Course;
+import com.example.trussell.wgustudentscheduler.receiver.AlarmReceiver;
 import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class AddAssessmentActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -71,12 +77,43 @@ public class AddAssessmentActivity extends AppCompatActivity implements View.OnC
         Date dueDateText = AppUtils.formatStringToDate(dueDate.getText().toString());
         Date goalDateText = AppUtils.formatStringToDate(goalDate.getText().toString());
         int alertGoalInt = AppUtils.booleanToInteger(alertGoal.isChecked());
+        String goalIdNotificationText;
 
         if (validate.length() == 0) {
+
+            String notificationTitle = "Assessment Reminder";
+            String notificationText = "Assessment '" + nameText + "' is scheduled for today.";
+
+            goalIdNotificationText = Integer.toString(new Random().nextInt(new Random().nextInt(10000)));
+
+            Intent goalNotificationIntent = new Intent(this.getApplicationContext(), AlarmReceiver.class);
+            goalNotificationIntent.putExtra("mNotificationTitle", notificationTitle);
+            goalNotificationIntent.putExtra("mNotificationContent", notificationText);
+            goalNotificationIntent.putExtra("mNotificationId", goalIdNotificationText);
+
+            int requestCode = Integer.parseInt(goalIdNotificationText);
+
+            PendingIntent goalPendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(),
+                    requestCode, goalNotificationIntent, 0);
+
+            AlarmManager goalAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                Date date = dateFormat.parse(AppUtils.getFormattedDateString(goalDateText));
+
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(date);
+
+                goalAlarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), goalPendingIntent);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
             try {
                 AssessmentRepository assessmentRepository = new AssessmentRepository(getApplicationContext());
                 assessmentRepository.insertAssessment(nameText, spinnerText, dueDateText,
-                        goalDateText, alertGoalInt, course.getId());
+                        goalDateText, alertGoalInt, course.getId(), goalIdNotificationText);
             } catch (Exception e) {
                 AppUtils.showLongMessage(this, e.toString());
             }

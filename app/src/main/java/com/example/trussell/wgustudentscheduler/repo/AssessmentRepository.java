@@ -21,7 +21,8 @@ public class AssessmentRepository implements Constants {
                 .fallbackToDestructiveMigration().build();
     }
 
-    public void insertAssessment(String name, String type, Date dueDate, Date goalDate, int alertGoal, int courseID) {
+    public void insertAssessment(String name, String type, Date dueDate, Date goalDate,
+                                 int alertGoal, int courseID, String alertGoalID) {
 
         Assessment assessment = new Assessment();
         assessment.setName(name);
@@ -30,6 +31,7 @@ public class AssessmentRepository implements Constants {
         assessment.setGoalDate(goalDate);
         assessment.setAlertGoal(alertGoal);
         assessment.setCourseID(courseID);
+        assessment.setAlertGoalID(alertGoalID);
 
         insertAssessment(assessment);
     }
@@ -80,5 +82,9 @@ public class AssessmentRepository implements Constants {
 
     public LiveData<List<Assessment>> fetchAssessmentsByCourse(int id) {
         return schedulerDatabase.daoAssessment().fetchAssessmentsByCourse(id);
+    }
+
+    public List<String> getAssessmentsInCourse(int id) {
+        return schedulerDatabase.daoAssessment().getAssessmentsInCourse(id);
     }
 }

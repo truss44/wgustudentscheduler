@@ -48,6 +48,9 @@ public class Assessment implements Serializable {
     @ColumnInfo(name = "courseID")
     private int courseID;
 
+    @ColumnInfo(name = "alertGoalID")
+    private String alertGoalID;
+
     @Ignore
     private static ArrayList<Assessment> assessmentsList;
 
@@ -113,5 +116,13 @@ public class Assessment implements Serializable {
 
     public static void addAssessments(Assessment assessment) {
         assessmentsList.add(assessment);
+    }
+
+    public String getAlertGoalID() {
+        return alertGoalID;
+    }
+
+    public void setAlertGoalID(String alertGoalID) {
+        this.alertGoalID = alertGoalID;
     }
 }

@@ -12,6 +12,7 @@ import com.example.trussell.wgustudentscheduler.R;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.util.diff.CourseDiffUtil;
 
+import java.text.DateFormat;
 import java.util.List;
 
 public class CoursesListAdapter extends RecyclerView.Adapter<CoursesListAdapter.CustomViewHolder> {
@@ -24,14 +25,20 @@ public class CoursesListAdapter extends RecyclerView.Adapter<CoursesListAdapter.
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_with_subtext, parent, false);
         return new CustomViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         Course course = getItem(position);
+
+        String startDate = DateFormat.getDateInstance(DateFormat.LONG).format(course.getStartDate());
+        String endDate = DateFormat.getDateInstance(DateFormat.LONG).format(course.getEndDate());
+        String subData = startDate + " - " + endDate;
+
         holder.itemName.setText(course.getName());
+        holder.itemSub.setText(subData);
     }
 
     @Override
@@ -53,10 +60,11 @@ public class CoursesListAdapter extends RecyclerView.Adapter<CoursesListAdapter.
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView itemName;
+        private final TextView itemName, itemSub;
         CustomViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.nameTextView);
+            itemSub = itemView.findViewById(R.id.subTextView);
         }
     }
 }

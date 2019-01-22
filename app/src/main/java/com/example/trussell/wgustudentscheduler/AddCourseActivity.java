@@ -1,7 +1,10 @@
 package com.example.trussell.wgustudentscheduler;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -15,13 +18,16 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.example.trussell.wgustudentscheduler.model.Term;
+import com.example.trussell.wgustudentscheduler.receiver.AlarmReceiver;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Random;
 
 public class AddCourseActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -73,12 +79,75 @@ public class AddCourseActivity extends AppCompatActivity implements View.OnClick
         Date endDateText = AppUtils.formatStringToDate(endDate.getText().toString());
         int alertStartInt = AppUtils.booleanToInteger(alertStart.isChecked());
         int alertEndInt = AppUtils.booleanToInteger(alertEnd.isChecked());
+        String startIdNotificationText = null;
+        String endIdNotificationText = null;
 
         if (validate.length() == 0) {
+
+            if (alertStart.isChecked()) {
+                String startNotificationTitle = "Course Start Reminder";
+                String startNotificationText = nameText + " begins today.";
+
+                startIdNotificationText = Integer.toString(new Random().nextInt(10000));
+
+                Intent startNotificationIntent = new Intent(this.getApplicationContext(), AlarmReceiver.class);
+                startNotificationIntent.putExtra("mNotificationTitle", startNotificationTitle);
+                startNotificationIntent.putExtra("mNotificationContent", startNotificationText);
+                startNotificationIntent.putExtra("mNotificationId", startIdNotificationText);
+
+                int requestCode = Integer.parseInt(startIdNotificationText);
+
+                PendingIntent startPendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(),
+                        requestCode, startNotificationIntent, 0);
+
+                AlarmManager startAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                    Date startDate = dateFormat.parse(AppUtils.getFormattedDateString(startDateText));
+                    Calendar startCal = Calendar.getInstance();
+                    startCal.setTime(startDate);
+                    startAlarmManager.set(AlarmManager.RTC_WAKEUP, startCal.getTimeInMillis(), startPendingIntent);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            if (alertEnd.isChecked()) {
+                String endNotificationTitle = "Course End Reminder";
+                String endNotificationText = nameText + " ends today.";
+
+                endIdNotificationText = Integer.toString(new Random().nextInt(10000));
+
+                Intent endNotificationIntent = new Intent(this.getApplicationContext(), AlarmReceiver.class);
+                endNotificationIntent.putExtra("mNotificationTitle", endNotificationTitle);
+                endNotificationIntent.putExtra("mNotificationContent", endNotificationText);
+                endNotificationIntent.putExtra("mNotificationId", endIdNotificationText);
+
+                int requestCode = Integer.parseInt(endIdNotificationText);
+
+                PendingIntent endPendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(),
+                        requestCode, endNotificationIntent, 0);
+
+                AlarmManager endAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                    Date endDate = dateFormat.parse(AppUtils.getFormattedDateString(endDateText));
+                    Calendar endCal = Calendar.getInstance();
+                    endCal.setTime(endDate);
+                    endAlarmManager.set(AlarmManager.RTC_WAKEUP, endCal.getTimeInMillis(), endPendingIntent);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+
             try {
                 CourseRepository courseRepository = new CourseRepository(getApplicationContext());
                 courseRepository.insertCourse(nameText, spinnerText, startDateText, endDateText,
-                        alertStartInt, alertEndInt, term.getId());
+                        alertStartInt, alertEndInt, term.getId(), startIdNotificationText, endIdNotificationText);
             } catch (Exception e) {
                 AppUtils.showLongMessage(this, e.toString());
             }

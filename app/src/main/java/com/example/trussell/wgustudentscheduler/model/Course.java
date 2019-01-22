@@ -51,6 +51,12 @@ public class Course implements Serializable {
     @ColumnInfo(name = "termID")
     private int termID;
 
+    @ColumnInfo(name = "alertStartID")
+    private String alertStartID;
+
+    @ColumnInfo(name = "alertEndID")
+    private String alertEndID;
+
     @Ignore
     private static ArrayList<Course> coursesList;
 
@@ -124,5 +130,21 @@ public class Course implements Serializable {
 
     public static void addCourses(Course course) {
         coursesList.add(course);
+    }
+
+    public String getAlertStartID() {
+        return alertStartID;
+    }
+
+    public void setAlertStartID(String alertStartID) {
+        this.alertStartID = alertStartID;
+    }
+
+    public String getAlertEndID() {
+        return alertEndID;
+    }
+
+    public void setAlertEndID(String alertEndID) {
+        this.alertEndID = alertEndID;
     }
 }

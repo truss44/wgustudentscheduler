@@ -24,7 +24,9 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
     @NonNull
     @Override
     public CustomViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_with_subtext,
+                parent, false);
+
         return new CustomViewHolder(view);
     }
 
@@ -32,6 +34,7 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
     public void onBindViewHolder(@NonNull CustomViewHolder holder, int position) {
         Mentor mentor = getItem(position);
         holder.itemName.setText(mentor.getName());
+        holder.itemSub.setText(mentor.getEmail());
     }
 
     @Override
@@ -53,10 +56,11 @@ public class MentorsListAdapter extends RecyclerView.Adapter<MentorsListAdapter.
 
     class CustomViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView itemName;
+        private final TextView itemName, itemSub;
         CustomViewHolder(View itemView) {
             super(itemView);
             itemName = itemView.findViewById(R.id.nameTextView);
+            itemSub = itemView.findViewById(R.id.subTextView);
         }
     }
 }

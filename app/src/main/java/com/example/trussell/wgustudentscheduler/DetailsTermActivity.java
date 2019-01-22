@@ -17,7 +17,6 @@ import android.view.View;
 
 import com.example.trussell.wgustudentscheduler.fragment.CourseFragment;
 import com.example.trussell.wgustudentscheduler.fragment.TermFragment;
-import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.repo.TermRepository;

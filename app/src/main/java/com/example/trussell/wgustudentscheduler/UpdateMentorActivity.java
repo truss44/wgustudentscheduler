@@ -42,11 +42,12 @@ public class UpdateMentorActivity extends AppCompatActivity {
         String phoneText = AppUtils.formatPhone(phone.getText().toString());
         String emailText = email.getText().toString();
 
-        mentor.setName(nameText);
-        mentor.setPhone(phoneText);
-        mentor.setEmail(emailText);
-
         if (validate.length() == 0) {
+
+            mentor.setName(nameText);
+            mentor.setPhone(phoneText);
+            mentor.setEmail(emailText);
+
             try {
                 MentorRepository mentorRepository = new MentorRepository(getApplicationContext());
                 mentorRepository.updateMentor(mentor);

@@ -1,10 +1,11 @@
 package com.example.trussell.wgustudentscheduler;
 
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
@@ -60,6 +61,11 @@ public class DetailsAssessmentActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+
+                        Intent intent = getIntent();
+                        int requestCode = Integer.parseInt(assessment.getAlertGoalID());
+                        PendingIntent.getBroadcast(getApplicationContext(), requestCode, intent,
+                                PendingIntent.FLAG_UPDATE_CURRENT).cancel();
 
                         Thread thread = new Thread(new Runnable(){
                             public void run() {

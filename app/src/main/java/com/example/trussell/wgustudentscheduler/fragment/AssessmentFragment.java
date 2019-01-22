@@ -15,19 +15,17 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.trussell.wgustudentscheduler.DetailsAssessmentActivity;
-import com.example.trussell.wgustudentscheduler.DetailsCourseActivity;
-import com.example.trussell.wgustudentscheduler.DetailsTermActivity;
 import com.example.trussell.wgustudentscheduler.R;
 import com.example.trussell.wgustudentscheduler.adapter.AssessmentsListAdapter;
 import com.example.trussell.wgustudentscheduler.model.Assessment;
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.repo.AssessmentRepository;
-import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.CurrentData;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewClickListener;
 import com.example.trussell.wgustudentscheduler.util.RecyclerViewTouchListener;
 
 import java.util.List;
+import java.util.Objects;
 
 public class AssessmentFragment extends Fragment {
 
@@ -58,7 +56,7 @@ public class AssessmentFragment extends Fragment {
             }
         }));
 
-        recyclerView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
+        recyclerView.addItemDecoration(new DividerItemDecoration(Objects.requireNonNull(getContext()), LinearLayoutManager.VERTICAL));
 
         emptyView = view.findViewById(R.id.emptyView);
 

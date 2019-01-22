@@ -1,7 +1,10 @@
 package com.example.trussell.wgustudentscheduler;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -16,11 +19,13 @@ import android.widget.Spinner;
 
 import com.example.trussell.wgustudentscheduler.model.Course;
 import com.example.trussell.wgustudentscheduler.model.Term;
+import com.example.trussell.wgustudentscheduler.receiver.AlarmReceiver;
 import com.example.trussell.wgustudentscheduler.repo.CourseRepository;
 import com.example.trussell.wgustudentscheduler.util.AppUtils;
 import com.example.trussell.wgustudentscheduler.util.CurrentData;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -75,12 +80,8 @@ public class UpdateCourseActivity extends AppCompatActivity implements View.OnCl
         endDate.setText(AppUtils.getFormattedDateString(course.getEndDate()));
 
         String statusValue = statusSpinner.getSelectedItem().toString();
-        if (statusValue != null) {
-            int spinnerPosition = adapter.getPosition(course.getStatus());
-            statusSpinner.setSelection(spinnerPosition);
-        } else {
-            statusSpinner.setSelection(0);
-        }
+        int spinnerPosition = adapter.getPosition(course.getStatus());
+        statusSpinner.setSelection(spinnerPosition);
 
         boolean alertStartBoolean = AppUtils.integerToBoolean(course.getAlertStart());
         boolean alertEndBoolean = AppUtils.integerToBoolean(course.getAlertEnd());
@@ -96,15 +97,86 @@ public class UpdateCourseActivity extends AppCompatActivity implements View.OnCl
         Date endDateText = AppUtils.formatStringToDate(endDate.getText().toString());
         int alertStartInt = AppUtils.booleanToInteger(alertStart.isChecked());
         int alertEndInt = AppUtils.booleanToInteger(alertEnd.isChecked());
-
-        course.setName(nameText);
-        course.setStatus(spinnerText);
-        course.setStartDate(startDateText);
-        course.setEndDate(endDateText);
-        course.setAlertStart(alertStartInt);
-        course.setAlertEnd(alertEndInt);
+        String startIdNotificationText = course.getAlertStartID();
+        String endIdNotificationText = course.getAlertEndID();
 
         if (validate.length() == 0) {
+
+            if (alertStart.isChecked()) {
+                String startNotificationTitle = "Course Start Reminder";
+                String startNotificationText = nameText + " begins today.";
+
+                Intent startNotificationIntent = new Intent(this.getApplicationContext(), AlarmReceiver.class);
+                startNotificationIntent.putExtra("mNotificationTitle", startNotificationTitle);
+                startNotificationIntent.putExtra("mNotificationContent", startNotificationText);
+                startNotificationIntent.putExtra("mNotificationId", startIdNotificationText);
+
+                int requestCode = Integer.parseInt(startIdNotificationText);
+
+                PendingIntent startPendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(),
+                        requestCode, startNotificationIntent, 0);
+
+                AlarmManager startAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                    Date startDate = dateFormat.parse(AppUtils.getFormattedDateString(startDateText));
+                    Calendar startCal = Calendar.getInstance();
+                    startCal.setTime(startDate);
+                    startAlarmManager.set(AlarmManager.RTC_WAKEUP, startCal.getTimeInMillis(), startPendingIntent);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Intent intent = getIntent();
+                int requestCode = Integer.parseInt(startIdNotificationText);
+                PendingIntent.getBroadcast(this.getApplicationContext(), requestCode, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT).cancel();
+            }
+
+            if (alertEnd.isChecked()) {
+                String endNotificationTitle = "Course End Reminder";
+                String endNotificationText = nameText + " ends today.";
+
+                Intent endNotificationIntent = new Intent(this.getApplicationContext(), AlarmReceiver.class);
+                endNotificationIntent.putExtra("mNotificationTitle", endNotificationTitle);
+                endNotificationIntent.putExtra("mNotificationContent", endNotificationText);
+                endNotificationIntent.putExtra("mNotificationId", endIdNotificationText);
+
+                int requestCode = Integer.parseInt(endIdNotificationText);
+
+                PendingIntent endPendingIntent = PendingIntent.getBroadcast(this.getApplicationContext(),
+                        requestCode, endNotificationIntent, 0);
+
+                AlarmManager endAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+                    Date endDate = dateFormat.parse(AppUtils.getFormattedDateString(endDateText));
+                    Calendar endCal = Calendar.getInstance();
+                    endCal.setTime(endDate);
+                    endAlarmManager.set(AlarmManager.RTC_WAKEUP, endCal.getTimeInMillis(), endPendingIntent);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Intent intent = getIntent();
+                int requestCode = Integer.parseInt(endIdNotificationText);
+                PendingIntent.getBroadcast(this.getApplicationContext(), requestCode, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT).cancel();
+            }
+
+            course.setName(nameText);
+            course.setStatus(spinnerText);
+            course.setStartDate(startDateText);
+            course.setEndDate(endDateText);
+            course.setAlertStart(alertStartInt);
+            course.setAlertEnd(alertEndInt);
+            course.setAlertStartID(startIdNotificationText);
+            course.setAlertEndID(endIdNotificationText);
+
             try {
                 CourseRepository courseRepository = new CourseRepository(getApplicationContext());
                 courseRepository.updateCourse(course);
@@ -159,12 +231,8 @@ public class UpdateCourseActivity extends AppCompatActivity implements View.OnCl
         name.setText(course.getName());
 
         String statusValue = statusSpinner.getSelectedItem().toString();
-        if (statusValue != null) {
-            int spinnerPosition = adapter.getPosition(course.getStatus());
-            statusSpinner.setSelection(spinnerPosition);
-        } else {
-            statusSpinner.setSelection(0);
-        }
+        int spinnerPosition = adapter.getPosition(course.getStatus());
+        statusSpinner.setSelection(spinnerPosition);
 
         startDate.setInputType(InputType.TYPE_CLASS_TEXT);
         startDate.setText(AppUtils.getFormattedDateString(course.getStartDate()));

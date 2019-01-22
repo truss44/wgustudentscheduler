@@ -96,8 +96,7 @@ public class AppUtils {
     }
 
     public static int booleanToInteger(boolean trueFalse) {
-        int output;
-        return output = trueFalse ? 1 : 0;
+        return trueFalse ? 1 : 0;
     }
 
     public static boolean integerToBoolean(int trueFalse) {
