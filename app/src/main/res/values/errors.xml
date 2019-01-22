@@ -14,4 +14,5 @@
     <string name="goal_date_before_due_date">Please enter a goal date that is BEFORE the due date</string>
     <string name="valid_note">Please enter a note</string>
     <string name="cannot_delete_term_course_attached">Cannot delete Term because it currently has at least one course attached to it.</string>
+    <string name="valid_phone_number">Please enter a phone number</string>
 </resources>

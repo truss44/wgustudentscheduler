@@ -66,10 +66,15 @@ public class UpdateMentorActivity extends AppCompatActivity {
     private String isValid() {
         StringBuilder errorMsg = new StringBuilder();
         String nameText = name.getText().toString();
+        String phoneText = phone.getText().toString();
         String emailText = email.getText().toString();
 
         if (AppUtils.isNullOrEmpty(nameText)) {
             errorMsg.append(getString(R.string.valid_name) + "\n");
+        }
+
+        if (AppUtils.isNullOrEmpty(phoneText)) {
+            errorMsg.append(getString(R.string.valid_phone_number) + "\n");
         }
 
         if (AppUtils.isNullOrEmpty(emailText) || !AppUtils.isValidEmail(emailText)) {
