@@ -41,8 +41,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         NotificationCompat.Builder mBuilder =
                 new NotificationCompat.Builder(context, CHANNEL_ID);
 
-        mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-        mBuilder.setLargeIcon(BitmapFactory.decodeResource(Resources.getSystem(), R.mipmap.ic_launcher));
+        mBuilder.setSmallIcon(R.drawable.ic_notification_default);
         mBuilder.setContentTitle(mNotificationTitle);
         mBuilder.setContentText(mNotificationContent);
         mBuilder.setContentIntent(resultPendingIntent);
