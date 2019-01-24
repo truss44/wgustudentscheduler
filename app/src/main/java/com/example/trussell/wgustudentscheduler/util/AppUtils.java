@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -105,5 +106,10 @@ public class AppUtils {
 
     public static String formatPhone(String number) {
         return PhoneNumberUtils.formatNumber(number, Locale.getDefault().getCountry());
+    }
+
+    public static int calculateBetweenDates(Date dateStart, Date dateEnd) {
+        long diff = dateEnd.getTime() - dateStart.getTime();
+        return (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
     }
 }
